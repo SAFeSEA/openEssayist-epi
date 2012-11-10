@@ -1,0 +1,19 @@
+{
+	"title": "essay title",
+	"course": "H810",
+	"module": "TMA01",
+	"stats": {
+		"wordcount": 1498
+	},
+	"task": "UID",
+	"user": "UID",
+	"text": [
+		{
+			"id": "0000",
+			"block": "0000",
+			"type": "paragraph",
+			"sentence": "text"
+		}
+	],
+	"version": "1"
+}

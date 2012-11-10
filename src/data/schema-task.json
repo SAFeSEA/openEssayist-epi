@@ -1,0 +1,15 @@
+{
+	"taskid" : "UID",
+	"title": "assignment title",	
+	"description": "assignment descritpion",	
+	"deadline": "2012-11-25",	
+	"metadata": {
+		"wordcount": 1500,
+		"process" : ["word1","word2"]
+	},
+	"essays":
+		[
+			"UID1","UID2","UID3"
+		]
+	
+}

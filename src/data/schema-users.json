@@ -1,0 +1,7 @@
+{
+	"users" :
+		[
+			{ "user": "UID1", "group":"GRP1"}
+		]
+	
+}

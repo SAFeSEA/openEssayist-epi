@@ -1,0 +1,16 @@
+{
+    "text": [
+        {
+            "type": "feedback",
+            "id": "0000",
+            "category": "XX => wordcount|readability|structure|keyphrase|keysentence",
+            "title": "title (short) of feedback",
+            "description": "longer description of the feedback",
+            "valence": "XXX => positive|negative",
+            "occurence": "XXX => low|medium|high",
+            "status": "XXX => success|info|warning|error",
+            "scope": "XXX = > essay|paragraph|sentence",
+            "params": ["a list of string containing the parameters of the feedback (eg sentence id, word limit), depending on the category of feedback"]
+       }
+	]
+}

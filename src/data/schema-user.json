@@ -1,0 +1,10 @@
+{
+	"userid" : "UID",
+	"group": "groupID",
+	"username": "user name",
+	"tasks":
+		[
+			"UID1","UID3"
+		]
+	
+}

@@ -1,0 +1,92 @@
+{
+	"type": "object",
+	"$schema": "http://json-schema.org/draft-03/schema",
+	"id": "#",
+	"required": false,
+	"properties": {
+		"course": {
+			"type": "string",
+			"id": "course",
+			"required": false
+		},
+		"definition": {
+			"type": "array",
+			"id": "definition",
+			"required": false,
+			"items": {
+				"type": "string",
+				"id": "0",
+				"required": false
+			}
+		},
+		"module": {
+			"type": "string",
+			"id": "module",
+			"required": false
+		},
+		"stats": {
+			"type": "object",
+			"id": "stats",
+			"required": false,
+			"properties": {
+				"wordcount": {
+					"type": "number",
+					"id": "wordcount",
+					"required": false
+				}
+			}
+		},
+		"task": {
+			"type": "string",
+			"id": "task",
+			"required": false
+		},
+		"text": {
+			"type": "array",
+			"id": "text",
+			"required": false,
+			"items": {
+				"type": "object",
+				"id": "0",
+				"required": false,
+				"properties": {
+					"block": {
+						"type": "string",
+						"id": "block",
+						"required": false
+					},
+					"id": {
+						"type": "string",
+						"id": "id",
+						"required": false
+					},
+					"sentence": {
+						"type": "string",
+						"id": "sentence",
+						"required": false
+					},
+					"type": {
+						"type": "string",
+						"id": "type",
+						"required": false
+					}
+				}
+			}
+		},
+		"title": {
+			"type": "string",
+			"id": "title",
+			"required": false
+		},
+		"user": {
+			"type": "string",
+			"id": "user",
+			"required": false
+		},
+		"version": {
+			"type": "string",
+			"id": "version",
+			"required": false
+		}
+	}
+}
