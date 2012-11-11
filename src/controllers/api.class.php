@@ -163,7 +163,6 @@ class APIController implements IController
 
 	static public function EssayID($user,$task,$essay)
 	{
-
 		if (isset($GLOBALS['schema']) || isset($_GET['schema']))
 		{
 			$json = (array)json_decode(file_get_contents("data/schema-essay.json"),true);
