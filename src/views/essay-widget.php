@@ -45,6 +45,7 @@
 					if (isset($item['params'])) 
 					{
 						$num = $item['params'];
+						
 						$oo = 0;
 						$args= '<br>';
 						foreach ($item['params'] as $itemX)
@@ -71,6 +72,8 @@ EOD;
 					//print_r ($item['sentence']);
 					$curstn = $item['id'];
 					
+					//var_dump($num);
+						
 					$ret = array_search($curstn,$num,true);
 					if ($ret !== false)
 					{
