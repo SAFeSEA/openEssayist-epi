@@ -117,6 +117,8 @@ class UserController implements IController
 		}
 		array_multisort($volume, SORT_ASC, $edition, SORT_ASC, $nav);
 		
+		//var_dump($nav);
+		
 		$apiParams['text'] = $nav;
 		//$apiParams["user"] = "XXXXXXXXXXXXXXXXX";
 		$tpllogin = new \Epi\EpiTemplate();

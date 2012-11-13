@@ -9,10 +9,11 @@ include_once 'apiclients/APIClient.class.php';
  */
 class APISpellCheck extends APIClient
 {
-	private static $SERVER_ADT = "http://localhost:1049";
-
+	private static $SERVER_ADT_REMOTE = "http://service.afterthedeadline.com";
+	private static $SERVER_ADT_LOCAL = "http://localhost:1049";
+	
 	function __construct() {
-		parent::__construct(self::$SERVER_ADT);
+		parent::__construct(self::$SERVER_ADT_LOCAL);
 	}
 
 
@@ -49,13 +50,13 @@ class APISpellCheck extends APIClient
 		$method = "GET";
 		$queryParams = array();
 
-		$queryParams['key'] = $text;
-		$queryParams['data'] = $this->getKey();
+		$queryParams['key'] = $this->getKey();;
+		$queryParams['data'] = "test the connection";//$text;
 
 		//make the API Call
 		$response = "";
 		try {
-			$response  = $this->callAPI($resourcePath, $method, $queryParams);
+			$response  = $this->callAPI($resourcePath, $method, $queryParams,$queryParams);
 
 		} catch (\Exception $e)
 		{

@@ -3,7 +3,7 @@
         {
             "type": "feedback",
             "category": "feedback",
-            "id": "snt_0000",
+            "id": "snt_00000",
             "title": "Number of words in your essay is significantly lower than the requirement.",
             "description": "There should be a minimum of %2$d words in this essay (and a maximum of %3$d), whereas your essay has %1$d words. And remember that the bibliography section is not included in the word count. Why not return to your essay and think about how you might be able to add more sentences and paragraphs? You might  find the computer's feedback on Key Phrases could help you to discern things that might be missing from your essay and that you might want to write about.",
             "argument": {
@@ -18,7 +18,7 @@
         {
             "type": "feedback",
             "category": "hint",
-            "id": "snt_0000",
+            "id": "snt_00001",
             "title": "Still a lot of spelling mistakes in your essay.",
             "description": "The computer thinks that there are still quite a lot of spelling mistakes in your essay, but computers can be wrong about these things, so let's continue regardless. By the way, thank you for your efforts to correct the spellings. They are hugely appreciated.",
             "status": "warning"
@@ -26,7 +26,7 @@
         {
             "type": "feedback",
             "category": "hint",
-            "id": "snt_0000",
+            "id": "snt_00002",
             "title": "The most important sentences in your essay",
             "description": "The computer thinks that these are the most important sentences in your essay - the ones that together sum up what your essay is about, and that will stand out to the reader (the marker/examiner). Do you agree with the computer? Do you think that these sentences sum up the most important points you wanted to make in your essay? Are there important points you are wanting to make that are not mentioned in these sentences? If there are, see if you can find any mention of those points in your essay, and consider adding more content about them.",
             "status": "info",
