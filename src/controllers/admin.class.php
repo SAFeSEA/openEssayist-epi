@@ -168,7 +168,6 @@ class AdminController implements IController
 		
 		//var_dump($allt);
 		//var_dump($hhh);
-		//echo (json_encode($hhh,0));
 		
 		//var_dump($urlret);
 		
@@ -178,7 +177,7 @@ class AdminController implements IController
 			
 			//$ret = $client->callAPI('/stats','GET',$data);
 			$client = new APISpellCheck();
-			$ret = $client->getStats($hhh);
+			$ret = $client->getSpelling($hhh);
 			var_dump(json_decode($ret,true));
 	
 		
@@ -274,8 +273,8 @@ TMQ;
 		
 			$resstr = vsprintf ($testctrl,$hhh);
 			$resstr2 = vsprintf ($resstr,$hhh2);
-			//var_dump($resstr2);
-			//var_dump($hhh);
+			var_dump($resstr2);
+			var_dump($hhh);
 			$params['content'] = $ff . "" . $resstr2;
 		}
 		

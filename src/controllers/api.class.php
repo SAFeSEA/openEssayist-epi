@@ -2,13 +2,6 @@
 
 include_once 'controller.php';
 
-
-function odd($var)
-{
-	// returns whether the input integer is odd
-	return($var != '' && $var != " ");
-}
-
 /**
  *
  * @author Nicolas Van Labeke (https://github.com/vanch3d)
@@ -167,8 +160,6 @@ class APIController implements IController
 		$json = self::TaskID($user,$task);
 		return array("essays" => $json['essays']);
 	}
-	
-	
 
 	static public function EssayID($user,$task,$essay)
 	{
@@ -180,15 +171,15 @@ class APIController implements IController
 		}
 
 		$file = file_get_contents("data/TMA01_H810_Submit.txt");
-		$order   = array("  ");
-		$replace = ' ';
+
+		$order   = array("\r");
+		$replace = '';
 
 
 		$newstr = str_replace($order, $replace, $file);
 		$arr = explode("\n",$newstr);
 
-		//var_dump($arr);
-		
+
 
 
 
@@ -200,8 +191,8 @@ class APIController implements IController
 		foreach ($emptyRemoved as $item)
 		{
 			$sentences22 = APIController::split_text($item);
-			$sentences = array_filter($sentences22,"openEssayist\odd");
-			//var_dump($sentences22);
+			$sentences = array_filter($sentences22);
+
 			$myarray22 = array();
 
 			foreach ($sentences as $item22)
@@ -226,7 +217,6 @@ class APIController implements IController
 			$par++;
 		}
 
-		//var_dump($myarray);
 		$json = (array)json_decode(file_get_contents("data/essay.json"),true);
 
 		$json['user'] = $user;

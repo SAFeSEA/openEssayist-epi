@@ -75,19 +75,14 @@ class APIClient {
 			}
 		}
 
-		var_dump($method);
-		
 		if (is_object($postData) or is_array($postData)) {
-			//$postData = json_encode($postData);
-			$postData = http_build_query($postData);
-			var_dump($postData);
+			$postData = json_encode($postData);
 		}
-		
 
 		$url = $this->apiServer . $resourcePath;
 
 		$curl = curl_init();
-		curl_setopt($curl, CURLOPT_TIMEOUT, 10);
+		curl_setopt($curl, CURLOPT_TIMEOUT, 5);
 		// return the result on success, rather than just TRUE
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
@@ -97,7 +92,6 @@ class APIClient {
 				$url = ($url . '?' . http_build_query($queryParams));
 			}
 		} else if ($method == self::$POST) {
-		var_dump($postData);
 			curl_setopt($curl, CURLOPT_POST, true);
 			curl_setopt($curl, CURLOPT_POSTFIELDS, $postData);
 		} else if ($method == self::$PUT) {
@@ -112,13 +106,12 @@ class APIClient {
 		}
 
 		curl_setopt($curl, CURLOPT_URL, $url);
-		curl_setopt($curl, CURLOPT_PROXY, 'http://wwwcache.open.ac.uk:80');
-		//curl_setopt($curl, CURLOPT_PROXYPORT, 80);
+
 		// Make the request
 		$response = curl_exec($curl);
 		$response_info = curl_getinfo($curl);
 
-		var_dump($response);var_dump($response_info);
+		//var_dump($response);var_dump($response_info);
 
 		// Handle the response
 		if ($response_info['http_code'] == 0) {
