@@ -15,6 +15,7 @@ include_once "controllers/api.class.php";
 include_once "controllers/user.class.php";
 include_once "controllers/admin.class.php";
 include_once 'apiclients/APISpellCheck.class.php';
+include_once 'apiclients/APIEssayAnalyser.class.php';
 include_once "data/constants.class.php";
 
 //require_once "epi/firelogger.php";
@@ -37,7 +38,8 @@ include_once "data/constants.class.php";
 ***************************************************************************************/
 \Epi\getRoute()->get('/', array('openEssayist\UserController','Home'));
 
-\Epi\getRoute()->get('/admin', array('openEssayist\AdminController','Admin'));
+\Epi\getRoute()->get('/admin/api', array('openEssayist\AdminController','APIs'));
+\Epi\getRoute()->get('/admin/service', array('openEssayist\AdminController','Services'));
 
 
 \Epi\getRoute()->get('/login', array('openEssayist\UserController','Login'));

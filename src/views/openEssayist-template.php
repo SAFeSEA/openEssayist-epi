@@ -8,10 +8,10 @@
 <meta name="author" content="">
 
 <!-- Le styles -->
-<link href="bootstrap/css/bootstrap.css" rel="stylesheet">
-<link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
-<link href="bootstrap/css/docs.css" rel="stylesheet">
-<link href="bootstrap/google-code-prettify/prettify.css"
+<link href="/bootstrap/css/bootstrap.css" rel="stylesheet">
+<link href="/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+<link href="/bootstrap/css/docs.css" rel="stylesheet">
+<link href="/bootstrap/google-code-prettify/prettify.css"
 	rel="stylesheet">
 
 
@@ -23,7 +23,7 @@
     <![endif]-->
 
 <!-- Le fav and touch icons -->
-<link rel="shortcut icon" href="bootstrap/ico/favicon.ico">
+<link rel="shortcut icon" href="/bootstrap/ico/favicon.ico">
 </head>
 
 <body data-spy="scroll" data-target=".bs-docs-sidebar">
@@ -39,13 +39,24 @@
 						class="icon-bar"></span>
 				</button>
 				
-				<a class="brand" href="/"><img class="brand-ico" src="bootstrap/img/openEssayist-icon.png">openEssayist</a>
+				<a class="brand" href="/"><img class="brand-ico" src="/bootstrap/img/openEssayist-icon.png">openEssayist</a>
 				<div class="nav-collapse collapse">
 					<ul class="nav">
 						<li class=""><a href="/">Home</a>
 						</li>
 						<li class=""><a href="/me">Dashboard</a>
 						</li>
+						              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Admin<b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                  <li class="nav-header">Configuration</li>
+                <li><a href="#">Administation</a></li>
+                  <li class="divider"></li>
+                  <li class="nav-header">Documentation</li>
+                  <li><a href="/admin/api">RESTful APIs</a></li>
+                  <li><a href="/admin/service">Web Services</a></li>
+                </ul>
+              </li>
 					</ul>
 				</div>
 			</div>
@@ -146,7 +157,7 @@
 			</p>
 			<p>
 				Designed and built with all the love in the world by <a
-					href="https://github.com/vanch3d" target="_blank"><img src="bootstrap/img/github.jpg">vanch3d</a>.
+					href="https://github.com/vanch3d" target="_blank"><img src="/bootstrap/img/github.jpg">vanch3d</a>.
 			</p>
 			<p>
 				Code licensed under <a
@@ -167,11 +178,10 @@
 	<!-- Le javascript
     ================================================== -->
 	<!-- Placed at the end of the document so the pages load faster -->
-	<script
-		src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
-	<script src="bootstrap/js/bootstrap.js"></script>
-	<script src="bootstrap/google-code-prettify/prettify.js"></script>
-		<script src="bootstrap/openEssayist.js"></script>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+	<script src="/bootstrap/js/bootstrap.js"></script>
+	<script src="/bootstrap/google-code-prettify/prettify.js"></script>
+		<script src="/bootstrap/openEssayist.js"></script>
 	
 
 </body>

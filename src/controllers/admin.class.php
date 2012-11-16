@@ -65,7 +65,7 @@ class AdminController implements IController
 	 *
 	 * @return multitype:string unknown multitype:
 	 */
-	static public function Admin()
+	static public function APIs()
 	{
 		// Check if we're already logged in, although we SHOULD never get here
 		//if (\Epi\getSession()->get(Constants::LOGGED_IN) == false)
@@ -150,10 +150,11 @@ class AdminController implements IController
 		$params['heading'] = 'openEssayist';
 		$params['content'] = $output;
 
+		$template->display('openEssayist-template.php', $params);
+	}
 
-
-		
-			
+	static public function Services()
+	{
 		$url = '/user/UID/task/UID/essay/UID.json';
 		$urlret =  \Epi\getApi()->invoke($url);
 		
@@ -179,13 +180,20 @@ class AdminController implements IController
 			//$ret = $client->callAPI('/stats','GET',$data);
 			$client = new APISpellCheck();
 			$ret = $client->getStats($hhh);
-			var_dump(json_decode($ret,true));
-	
-		
+			//var_dump(json_decode($ret,true));
+			
+			$client = new APIEssayAnalyser();
+			$ret = $client->getStats($hhh);
+				
+
+			$template = new \Epi\EpiTemplate();
+		$params = array();
+		$params['heading'] = 'openEssayist';
+		$params['content'] = $output;
 
 		$template->display('openEssayist-template.php', $params);
 	}
-
+	
 	static public function AdminTest()
 	{
 		// Check if we're already logged in, although we SHOULD never get here

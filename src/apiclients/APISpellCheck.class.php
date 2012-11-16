@@ -13,7 +13,7 @@ class APISpellCheck extends APIClient
 	private static $SERVER_ADT_LOCAL = "http://localhost:1049";
 	
 	function __construct() {
-		parent::__construct(self::$SERVER_ADT_LOCAL);
+		parent::__construct(self::$SERVER_ADT_REMOTE);
 	}
 
 
