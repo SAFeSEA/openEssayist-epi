@@ -33,7 +33,7 @@ class APISpellCheck extends APIClient
 	protected function getKey()
 	{
 		$ret = "OESS-" . md5($this->full_url());
-		var_dump($ret);
+		//var_dump($ret);
 		return $ret;
 	}
 

@@ -166,26 +166,33 @@ class AdminController implements IController
 			$allt[] = $value['sentence'];
 		}
 		$hhh = implode (" ", $allt);
-		
-		//var_dump($allt);
-		//var_dump($hhh);
-		//echo (json_encode($hhh,0));
-		
-		//var_dump($urlret);
-		
-		
-			//$client = new APIClient('dfdff', 'http://localhost:1049');
-		//	$data = array('data'=>$hhh);
-			
-			//$ret = $client->callAPI('/stats','GET',$data);
-			$client = new APISpellCheck();
-			$ret = $client->getStats($hhh);
-			//var_dump(json_decode($ret,true));
-			
-			$client = new APIEssayAnalyser();
-			$ret = $client->getStats($hhh);
-				
 
+		
+		// build a list of API tests
+		$test = array();
+		
+		// build a list of API tests
+		$client = new APISpellCheck();
+		$ret = $client->getStats($hhh);
+		$test[] = array(
+					"description" => "Get the list of all users",
+					"api" => $client->getCalledURL(),
+					"output" =>AdminController::indent(($ret))
+			);
+			
+		// build a list of API tests
+		$client = new APIEssayAnalyser();
+		$ret = $client->getStats($hhh);
+		$test[] = array(
+				"description" => "Get the list of all users",
+				"api" => $client->getCalledURL(),
+				"output" =>AdminController::indent(json_encode($ret))
+		);
+					
+			$tpllogin = new \Epi\EpiTemplate();
+			$output = $tpllogin->get('admin-widget.php',array('api' => $test));
+				
+			
 			$template = new \Epi\EpiTemplate();
 		$params = array();
 		$params['heading'] = 'openEssayist';

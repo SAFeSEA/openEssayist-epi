@@ -30,14 +30,20 @@ class APIClient {
 	public static $XML = "text/xml";
 	public static $JSON = "application/json";
 
+	public function getCalledURL(){
+		return $this->callURL;
+	}
+
 
 	/**
 	 * @param string $apiServer the address of the API server
+	 * @param string $proxy the proxy to use to access the server
 	 */
-	function __construct($apiServer) {
+	function __construct($apiServer,$proxy=null) {
 		$this->apiServer = $apiServer;
+		$this->proxyServer = $proxy;
 	}
-
+	
 
 	/**
 	 * Shorten a string to a given length.
@@ -75,12 +81,12 @@ class APIClient {
 			}
 		}
 
-		var_dump($method);
+		//var_dump($method);
 		
 		if (is_object($postData) or is_array($postData)) {
 			//$postData = json_encode($postData);
 			$postData = http_build_query($postData);
-			var_dump($postData);
+			//var_dump($postData);
 		}
 		
 
@@ -112,13 +118,16 @@ class APIClient {
 		}
 
 		curl_setopt($curl, CURLOPT_URL, $url);
-		curl_setopt($curl, CURLOPT_PROXY, 'http://wwwcache.open.ac.uk:80');
+		if (! empty($this->proxyServer))
+			curl_setopt($curl, CURLOPT_PROXY, $this->proxyServer);
 		//curl_setopt($curl, CURLOPT_PROXYPORT, 80);
 		// Make the request
 		$response = curl_exec($curl);
 		$response_info = curl_getinfo($curl);
 
-		var_dump($response);var_dump($response_info);
+		$this->callURL = $url;
+		
+		//var_dump($response);var_dump($response_info);
 
 		// Handle the response
 		if ($response_info['http_code'] == 0) {
