@@ -42,12 +42,18 @@ include_once "data/constants.class.php";
 \Epi\getRoute()->get('/admin/service', array('openEssayist\AdminController','Services'));
 
 
+
 \Epi\getRoute()->get('/login', array('openEssayist\UserController','Login'));
 \Epi\getRoute()->post('/login', array('openEssayist\UserController','ProcessLogin'));
 \Epi\getRoute()->get('/logout', array('openEssayist\UserController','Logout'));
-\Epi\getRoute()->get('/user', array('openEssayist\UserController','Dashboard'));
-\Epi\getRoute()->get('/me', array('openEssayist\UserController','Access'));
-\Epi\getRoute()->get('/user/task/(\w+)', array('openEssayist\UserController','Dashboard'));
+//\Epi\getRoute()->get('/user', array('openEssayist\UserController','Dashboard'));
+\Epi\getRoute()->get('/me', array('openEssayist\UserController','Dashboard'));
+\Epi\getRoute()->get('/me/task', array('openEssayist\UserController','Access'));
+\Epi\getRoute()->get('/me/task/([\w-_]+)', array('openEssayist\UserController','ListofEssays'));
+\Epi\getRoute()->get('/me/task/([\w-_]+)/essay/([\w-_]+)', array('openEssayist\UserController','ShowEssay'));
+\Epi\getRoute()->get('/me/task/([\w-_]+)/essay/([\w-_]+)/dispersion', array('openEssayist\UserController','ShowDispersion'));
+\Epi\getRoute()->get('/me/task/([\w-_]+)/submit', array('openEssayist\UserController','SubmitEssay'));
+\Epi\getRoute()->post('/me/task/([\w-_]+)/submit', array('openEssayist\UserController','ProcessEssay'));
 
 // API routes
 \Epi\getApi()->get('/version.json', array('openEssayist\APIController','Debug'), \Epi\EpiApi::external);
@@ -61,9 +67,18 @@ include_once "data/constants.class.php";
 \Epi\getApi()->get('/user/(\w+)/task/(\w+)/essay/(\w+)/feedback.json', array('openEssayist\APIController','EssayFeedback'), \Epi\EpiApi::external);
 
 // catchall route (404)
+\Epi\getRoute()->get('/test/([\w-_]+)', 'openEssayist\testReg');
+
 \Epi\getRoute()->get('.*', 'openEssayist\error404');
 
 \Epi\getRoute()->run();
+
+
+function testReg($ffffff) {
+	var_dump($ffffff);
+	var_dump($route);
+	echo "<h1>404 Page Does Not Exist</h1>";
+}
 
 /**
  *

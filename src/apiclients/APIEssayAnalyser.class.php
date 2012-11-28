@@ -9,7 +9,7 @@ include_once 'apiclients/APIClient.class.php';
  */
 class APIEssayAnalyser extends APIClient
 {
-	private static $SERVER_pEA = "http://localhost:8065";
+	private static $SERVER_pEA = "http://localhost:8062";
 	
 	function __construct() {
 		parent::__construct(self::$SERVER_pEA);
@@ -43,6 +43,64 @@ class APIEssayAnalyser extends APIClient
 		return $response ;
 	}
 	
+
+	/**
+	 *
+	 * @param unknown $text
+	 * @return string
+	 */
+	function getAnalysis($text)
+	{
+		$resourcePath = "/api/essay/analysis";
+		$method = "POST";
+		$queryParams = array();
+	
+		$queryParams['text'] = $text;
+	
+		//make the API Call
+		$response = "";
+		try {
+			$response  = $this->callAPI($resourcePath, $method, $queryParams,$queryParams);
+	
+		} catch (\Exception $e)
+		{
+			//var_dump($e->getMessage());
+			if(\Epi\Epi::getSetting('debug'))
+				\Epi\getDebug()->addMessage(__CLASS__, $e->getMessage());
+		}
+	
+		//var_dump($response);
+		return $response ;
+	}
+
+	/**
+	 *
+	 * @param unknown $text
+	 * @return string
+	 */
+	function getDispersion($text)
+	{
+		$resourcePath = "/api/essay/dispersion";
+		$method = "POST";
+		$queryParams = array();
+	
+		$queryParams['text'] = $text;
+	
+		//make the API Call
+		$response = "";
+		try {
+			$response  = $this->callAPI($resourcePath, $method, $queryParams,$queryParams);
+	
+		} catch (\Exception $e)
+		{
+			//var_dump($e->getMessage());
+			if(\Epi\Epi::getSetting('debug'))
+				\Epi\getDebug()->addMessage(__CLASS__, $e->getMessage());
+		}
+	
+		//var_dump($response);
+		return $response ;
+	}
 	
 	
 }

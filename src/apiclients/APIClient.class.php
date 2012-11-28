@@ -95,15 +95,17 @@ class APIClient {
 		$curl = curl_init();
 		curl_setopt($curl, CURLOPT_TIMEOUT, 10);
 		// return the result on success, rather than just TRUE
-		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-		curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+
 
 		if ($method == self::$GET) {
-			if (! empty($queryParams)) {
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+		if (! empty($queryParams)) {
 				$url = ($url . '?' . http_build_query($queryParams));
 			}
 		} else if ($method == self::$POST) {
-		var_dump($postData);
+		//var_dump($postData);
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 			curl_setopt($curl, CURLOPT_POST, true);
 			curl_setopt($curl, CURLOPT_POSTFIELDS, $postData);
 		} else if ($method == self::$PUT) {
@@ -140,7 +142,7 @@ class APIClient {
 				$data = json_encode($simpleXml);
 			}
 			else
-				$data = json_decode($response);
+				$data = json_decode($response,true);
 		} else if ($response_info['http_code'] == 401) {
 			throw new \Exception("Unauthorized API request to " . $this->addEllipsis($url) .
 					": ".json_decode($response)->message );

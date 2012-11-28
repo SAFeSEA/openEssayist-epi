@@ -66,7 +66,7 @@
 	<!-- Subhead
 ================================================== -->
 	<header class="subdhead" id="overview">
-		<div class="container"></div>
+
 	</header>
 
 
@@ -181,7 +181,8 @@
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 	<script src="/bootstrap/js/bootstrap.js"></script>
 	<script src="/bootstrap/google-code-prettify/prettify.js"></script>
-		<script src="/bootstrap/openEssayist.js"></script>
+	<script src="/bootstrap/openEssayist.js"></script>
+	<?php echo $injectJS; ?>
 	
 
 </body>

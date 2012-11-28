@@ -4,7 +4,9 @@
 	"username": "user name",
 	"tasks":
 		[
-			"UID1","UID3"
+            {"id":"h810tma01","task":"H810 - TMA01","deadline":"2012-10-08","drafts":18,"title":"title 1","desc":"This is a description"},
+            {"id":"h810tma02","task":"H810 - TMA02","deadline":"2012-10-08","drafts":4,"title":"title 1","desc":"This is a description"},
+            {"id":"h810ema02","task":"H810 - EMA01","deadline":"2012-12-25","drafts":2,"title":"title 2","desc":"This is another description"}
 		]
 	
 }
