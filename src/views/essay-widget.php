@@ -7,7 +7,7 @@
 		</blockquote></div>
 		</header>
 
-<div class="">		
+<div class="myessay">		
 			<?php
 			
 			$curblock = Null;

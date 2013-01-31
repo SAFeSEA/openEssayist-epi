@@ -27,7 +27,8 @@ class EpiDebug
       foreach($messages as $message)
       {
       	$colsize = max(0,$col1Width-strlen($message));
-        $out .= '| ' . $message . str_repeat(' ', $colsize) . " |\n";
+        //$out .= '| ' . $message . str_repeat(' ', $colsize) . " |\n";
+        $out .= '' . $message . str_repeat(' ', $colsize) . "\n";
       }
     }
     return $out;

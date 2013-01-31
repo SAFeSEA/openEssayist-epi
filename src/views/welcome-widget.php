@@ -7,7 +7,13 @@
 			<p>
 				<a href="/login" class="btn btn-primary btn-large">Learn more
 					&raquo;</a>
-			</p>
+
+				<?php if($username) : ?>
+					
+				<a href="/login" class="btn btn-large">Login
+					&raquo;</a>
+				<?php endif; ?>					
+						</p>
 		</div>
 	</div>
 </div>

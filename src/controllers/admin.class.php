@@ -6,7 +6,7 @@ include_once 'controller.php';
  * @author Nicolas Van Labeke (https://github.com/vanch3d)
  *
  */
-class AdminController implements IController
+class AdminController extends IController
 {
 
 
@@ -86,15 +86,6 @@ class AdminController implements IController
 		);
 
 		// build a list of API tests
-		$url = '/user/UID.json';
-		$urlret =  \Epi\getApi()->invoke($url);
-		$test[] = array(
-				"description" => "Get the user profile ",
-				"api" => $url,
-				"output" => AdminController::indent(json_encode($urlret))
-		);
-
-		// build a list of API tests
 		$url = '/user/UID/task.json';
 		$urlret =  \Epi\getApi()->invoke($url);
 		$test[] = array(
@@ -103,27 +94,32 @@ class AdminController implements IController
 				"output" => AdminController::indent(json_encode($urlret))
 		);
 
+		$ggggggg = $urlret['tasks'][0]['id'];
+		var_dump($ggggggg);
+
 		// build a list of API tests
-		$url = '/user/UID/task/UID.json';
+		$url = "/user/UID/task/$ggggggg.json";
 		$urlret =  \Epi\getApi()->invoke($url);
 		$test[] = array(
 				"description" => "Get the detail of a particular assignment",
 				"api" => $url,
 				"output" => AdminController::indent(json_encode($urlret))
 		);
-
+		
 		// build a list of API tests
-		$url = '/user/UID/task/UID/essay.json';
+		$url = "/user/UID/task/$ggggggg/essay.json";
 		$urlret =  \Epi\getApi()->invoke($url);
 		$test[] = array(
 				"description" => "Get all the drafts submitted to the system",
 				"api" => $url,
 				"output" => AdminController::indent(json_encode($urlret))
 		);
-
+		$hhhhh = $urlret['essays'][0]['ref'];
+		var_dump($hhhhh);
+		
 		// build a list of API tests
-		$url = '/user/UID/task/UID/essay/UID.json';
-		$urlret =  \Epi\getApi()->invoke($url,\Epi\EpiRoute::httpGet,array('schema'=>'true'));
+		$url = "/user/UID/task/$ggggggg/essay/$hhhhh.json";
+		$urlret =  \Epi\getApi()->invoke($url,\Epi\EpiRoute::httpGet);
 		$test[] = array(
 				"description" => "Get the details of a particular draft",
 				"api" => $url,
@@ -132,25 +128,40 @@ class AdminController implements IController
 
 
 		// build a list of API tests
-		$url = '/user/UID/task/UID/essay/UID/feedback.json';
-		$urlret =  \Epi\getApi()->invoke($url,\Epi\EpiRoute::httpGet,array('schema'=>'true'));
+		$url = "/user/UID/task/$ggggggg/essay/$hhhhh/feedback.json";
+		$urlret =  \Epi\getApi()->invoke($url,\Epi\EpiRoute::httpGet,array('schema'=>'false'));
 		$test[] = array(
 				"description" => "Get feedback on this particular essay",
 				"api" => $url,
 				"output" => AdminController::indent(json_encode($urlret))
 		);
 
-
+		//$test2 = array();
+		//$test2 = array_slice($test,0,5);
+		
 		$tpllogin = new \Epi\EpiTemplate();
 		$output = $tpllogin->get('admin-widget.php',array('api' => $test));
 
 
 		$template = new \Epi\EpiTemplate();
 		$params = array();
-		$params['heading'] = 'openEssayist';
+		$params['heading'] = 'APIs';
 		$params['content'] = $output;
 
-		$template->display('openEssayist-template.php', $params);
+		$params['injectCSS'] = <<<EOF
+		<link rel="stylesheet" title="GitHub" href="/bootstrap/css/highlight.github.css">		
+EOF;
+		$params['injectJS'] = <<<EOF
+		<script src="/bootstrap/highlight.pack.js"></script>
+		<script src="/bootstrap/highlight.languages.js"></script>
+		<script>
+			$(document).ready(function() {
+					hljs.initHighlightingOnLoad()
+				});
+		</script>
+EOF;
+
+		IController::showTemplate('openEssayist-template.php', $params);
 	}
 
 	static public function Services()
@@ -198,7 +209,7 @@ class AdminController implements IController
 		$params['heading'] = 'openEssayist';
 		$params['content'] = $output;
 
-		$template->display('openEssayist-template.php', $params);
+		IController::showTemplate('openEssayist-template.php', $params);
 	}
 	
 	static public function AdminTest()

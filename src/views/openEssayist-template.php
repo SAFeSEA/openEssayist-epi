@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title><?php echo $heading; ?> - openEssayist</title>
+<title>openEssayist - <?php echo $heading; ?></title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="">
 <meta name="author" content="">
@@ -11,10 +11,10 @@
 <link href="/bootstrap/css/bootstrap.css" rel="stylesheet">
 <link href="/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
 <link href="/bootstrap/css/docs.css" rel="stylesheet">
-<link href="/bootstrap/google-code-prettify/prettify.css"
-	rel="stylesheet">
 
-
+<link href="/bootstrap/jquery-ui-1.9.2.custom/css/bootstrap/jquery-ui-1.9.2.custom.css" rel="stylesheet">
+	
+<?php if (isset($injectCSS)) echo $injectCSS; ?>
 	
 
 <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
@@ -30,47 +30,69 @@
 
 	<!-- Navbar
     ================================================== -->
-	<div class="navbar navbar-inverse navbar-fixed-top">
+	<div class="navbar navbar-fixed-top">
 		<div class="navbar-inner">
-			<div class="container">
+			<div class="container-fluid">
 				<button type="button" class="btn btn-navbar" data-toggle="collapse"
 					data-target=".nav-collapse">
 					<span class="icon-bar"></span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span>
 				</button>
-				
-				<a class="brand" href="/"><img class="brand-ico" src="/bootstrap/img/openEssayist-icon.png">openEssayist</a>
-				<div class="nav-collapse collapse">
-					<ul class="nav">
-						<li class=""><a href="/">Home</a>
-						</li>
-						<li class=""><a href="/me">Dashboard</a>
-						</li>
-						              <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Admin<b class="caret"></b></a>
-                <ul class="dropdown-menu">
-                  <li class="nav-header">Configuration</li>
-                <li><a href="#">Administation</a></li>
-                  <li class="divider"></li>
-                  <li class="nav-header">Documentation</li>
-                  <li><a href="/admin/api">RESTful APIs</a></li>
-                  <li><a href="/admin/service">Web Services</a></li>
-                </ul>
-              </li>
+
+				<a class="brand" href="/"><img class="brand-ico"
+					src="/bootstrap/img/openEssayist-icon.png">openEssayist</a>
+
+				<?php if($username) : ?>
+				<div class="btn-group pull-right">
+					<a class="btn dropdown-toggle" data-toggle="dropdown"
+						title="dfsdf sdfs df sadf sdf sad" href="#"> <i class="icon-user"></i>
+						Username <span class="caret"></span>
+					</a>
+					<ul class="dropdown-menu">
+						<li><a href="#">Profile</a></li>
+						<li class="divider"></li>
+						<li><a href="/logout">Sign Out</a></li>
 					</ul>
 				</div>
+
+
+
+				<div class="nav-collapse collapse">
+					<ul class="nav">
+						<li class=""><a href="/me" rel="tooltip" data-placement="bottom"
+							title="Overview of your essays and feedback"><i
+								class="icon-tasks"></i> Dashboard</a>
+						</li>
+						<li class="dropdown"><a href="#" class="dropdown-toggle"
+							data-placement="bottom" rel="tooltip"
+							title="Restricted access to administrative tools"
+							data-toggle="dropdown"><i class="icon-cog"></i> Admin<b class="caret"></b>
+						</a>
+							<ul class="dropdown-menu">
+								<li class="nav-header">Configuration</li>
+								<li><a href="#">Administation</a></li>
+								<li class="divider"></li>
+								<li class="nav-header">Documentation</li>
+								<li><a href="/admin/api">RESTful APIs</a></li>
+								<li><a href="/admin/service">Web Services</a></li>
+							</ul>
+						</li>
+					</ul>
+				</div>
+				<?php endif; ?>
+
 			</div>
 		</div>
 	</div>
 
 	<!-- Subhead
 ================================================== -->
-	<header class="subdhead" id="overview">
-
-	</header>
+	<header class="subdhead" id="overview"> </header>
 
 
 	<div class="container">
+	
+	<?php if (isset($breadcrumb)) echo $breadcrumb; ?>
 
 		<!-- Docs nav
     ================================================== -->
@@ -84,34 +106,24 @@
 				{
 					//echo print_r($subcontent);
 					echo "<div class=\"span3 bs-docs-sidebar\">";
-					echo "<ul class=\"nav nav-list bs-docs-sidenav\">";
-					
-					foreach ($subcontent as $item)
+
+					if (is_array($subcontent))
 					{
-						$str = ($item['status']=='error')?important:$item['status'];
-						echo "<li><a href=\"#feed{$item['itemid']}\"><i class=\"icon-chevron-right\"></i>
+						echo "<ul class=\"nav nav-list bs-docs-sidenav\">";
+						foreach ($subcontent as $item)
+						{
+							$str = ($item['status']=='error')?important:$item['status'];
+							echo "<li><a href=\"#feed{$item['itemid']}\"><i class=\"icon-chevron-right\"></i>
 							<span class=\"badge badge-{$str}\">&nbsp;</span> {$item['title']}</a></li>";
+						}
+						echo "</ul>";
 					}
-					
-					echo "</ul></div>";
+					else
+						echo $subcontent;
+					echo "</div>";
 				}
 			?>
-			<!-- <div class="span3 bs-docs-sidebar">
-				<ul class="nav nav-list bs-docs-sidenav">
-					<li><a href="#typography"><i class="icon-chevron-right"></i>
-							Typography</a></li>
-					<li><a href="#code"><i class="icon-chevron-right"></i> Code</a></li>
-					<li><a href="#tables"><i class="icon-chevron-right"></i> Tables</a>
-					</li>
-					<li><a href="#forms"><i class="icon-chevron-right"></i> Forms</a></li>
-					<li><a href="#buttons"><i class="icon-chevron-right"></i> Buttons</a>
-					</li>
-					<li><a href="#images"><i class="icon-chevron-right"></i> Images</a>
-					</li>
-					<li><a href="#icons"><i class="icon-chevron-right"></i> Icons by
-							Glyphicons</a></li>
-				</ul>
-			</div> -->
+
 
 			<div class="span9">
 
@@ -157,7 +169,8 @@
 			</p>
 			<p>
 				Designed and built with all the love in the world by <a
-					href="https://github.com/vanch3d" target="_blank"><img src="/bootstrap/img/github.jpg">vanch3d</a>.
+					href="https://github.com/vanch3d" target="_blank"><img
+					src="/bootstrap/img/github.jpg">vanch3d</a>.
 			</p>
 			<p>
 				Code licensed under <a
@@ -168,7 +181,8 @@
 			<ul class="footer-links">
 				<li><a href="http://blog.getbootstrap.com">Blog</a></li>
 				<li class="muted">&middot;</li>
-				<li><a href="https://github.com/SAFeSEA/openEssayist-epi/wiki">Documentation</a></li>
+				<li><a href="https://github.com/SAFeSEA/openEssayist-epi/wiki">Documentation</a>
+				</li>
 			</ul>
 		</div>
 	</footer>
@@ -178,12 +192,12 @@
 	<!-- Le javascript
     ================================================== -->
 	<!-- Placed at the end of the document so the pages load faster -->
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+	<script
+		src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 	<script src="/bootstrap/js/bootstrap.js"></script>
-	<script src="/bootstrap/google-code-prettify/prettify.js"></script>
 	<script src="/bootstrap/openEssayist.js"></script>
 	<?php echo $injectJS; ?>
-	
+
 
 </body>
 </html>

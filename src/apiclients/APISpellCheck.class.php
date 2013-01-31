@@ -32,7 +32,7 @@ class APISpellCheck extends APIClient
 	 */
 	protected function getKey()
 	{
-		$ret = "OESS-" . md5($this->full_url());
+		$ret = "OESS-" . md5($this->full_url()) .rand(1,50);
 		//var_dump($ret);
 		return $ret;
 	}
@@ -51,7 +51,7 @@ class APISpellCheck extends APIClient
 		$queryParams = array();
 
 		$queryParams['key'] = $this->getKey();;
-		$queryParams['data'] = "test the connection";//$text;
+		$queryParams['data'] = $text;
 
 		//make the API Call
 		$response = "";
@@ -75,7 +75,7 @@ class APISpellCheck extends APIClient
 		$queryParams = array();
 
 		$queryParams['data'] = $text;
-		$queryParams['key'] = $text;
+		//$queryParams['key'] = $text;
 
 		//make the API Call
 		$response = "";
@@ -98,7 +98,7 @@ class APISpellCheck extends APIClient
 		$queryParams = array();
 
 		$queryParams['data'] = $text;
-		$queryParams['key'] = $text;
+		//$queryParams['key'] = $text;
 
 		//make the API Call
 		$response = "";

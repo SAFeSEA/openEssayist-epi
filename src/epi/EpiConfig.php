@@ -10,7 +10,7 @@ class EpiConfig
   private $config;
   public function __construct()
   {
-    $this->config = new stdClass;
+    $this->config = new \stdClass;
   }
 
   /**
@@ -41,7 +41,7 @@ class EpiConfig
         else
         {
           if(!isset($this->config->$key))
-            $this->config->$key = new stdClass;
+            $this->config->$key = new \stdClass;
           foreach($value as $innerKey => $innerValue)
             $this->config->$key->$innerKey = $innerValue;
         }

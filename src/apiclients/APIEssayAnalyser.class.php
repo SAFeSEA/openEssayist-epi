@@ -30,7 +30,7 @@ class APIEssayAnalyser extends APIClient
 		$queryParams['data'] = "test the connection";//$text;
 	
 		//make the API Call
-		$response = "";
+		$response = Null;
 		try {
 			$response  = $this->callAPI($resourcePath, $method, $queryParams,$queryParams);
 	
@@ -38,8 +38,13 @@ class APIEssayAnalyser extends APIClient
 		{
 			if(\Epi\Epi::getSetting('debug'))
 				\Epi\getDebug()->addMessage(__CLASS__, $e->getMessage());
+			
+					$response['error'] = array(
+					'code' => $e->getCode(),
+					'ctxt' =>  $this->apiServer . $resourcePath,
+					'msg' => $e->getMessage());
 		}
-	
+				
 		return $response ;
 	}
 	
@@ -58,7 +63,7 @@ class APIEssayAnalyser extends APIClient
 		$queryParams['text'] = $text;
 	
 		//make the API Call
-		$response = "";
+		$response = Null;
 		try {
 			$response  = $this->callAPI($resourcePath, $method, $queryParams,$queryParams);
 	
@@ -67,6 +72,12 @@ class APIEssayAnalyser extends APIClient
 			//var_dump($e->getMessage());
 			if(\Epi\Epi::getSetting('debug'))
 				\Epi\getDebug()->addMessage(__CLASS__, $e->getMessage());
+			
+			$response['error'] = array();
+			$response['error'][] = array(
+					'code' => $e->getCode(),
+					'ctxt' =>  $this->apiServer .$resourcePath,
+					'msg' => $e->getMessage());
 		}
 	
 		//var_dump($response);
@@ -87,7 +98,7 @@ class APIEssayAnalyser extends APIClient
 		$queryParams['text'] = $text;
 	
 		//make the API Call
-		$response = "";
+		$response = Null;
 		try {
 			$response  = $this->callAPI($resourcePath, $method, $queryParams,$queryParams);
 	
@@ -96,8 +107,48 @@ class APIEssayAnalyser extends APIClient
 			//var_dump($e->getMessage());
 			if(\Epi\Epi::getSetting('debug'))
 				\Epi\getDebug()->addMessage(__CLASS__, $e->getMessage());
+			
+					$response['error'] = array(
+					'code' => $e->getCode(),
+					'ctxt' => $this->apiServer . $resourcePath,
+					'msg' => $e->getMessage());
 		}
+				
+		//var_dump($response);
+		return $response ;
+	}
 	
+	/**
+	 *
+	 * @param unknown $text
+	 * @return string
+	 */
+	function getKeywords($text)
+	{
+		$resourcePath = "/api/essay/keywords";
+		$method = "POST";
+		$queryParams = array();
+	
+		$queryParams['text'] = $text;
+	
+		//make the API Call
+		$response = Null;
+		try {
+			$response  = $this->callAPI($resourcePath, $method, $queryParams,$queryParams);
+	
+		} catch (\Exception $e)
+		{
+			//var_dump($e->getMessage());
+			if(\Epi\Epi::getSetting('debug'))
+				\Epi\getDebug()->addMessage(__CLASS__, $e->getMessage());
+			
+			$response['error'] = array();
+			$response['error'][] = array(
+					'code' => $e->getCode(),
+					'ctxt' =>  $this->apiServer .$resourcePath,
+					'msg' => $e->getMessage());
+					}
+				
 		//var_dump($response);
 		return $response ;
 	}

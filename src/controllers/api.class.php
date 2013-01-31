@@ -14,7 +14,7 @@ function odd($var)
  * @author Nicolas Van Labeke (https://github.com/vanch3d)
  *
  */
-class APIController implements IController
+class APIController extends IController
 {
 	/**
 	 * 
@@ -25,8 +25,7 @@ class APIController implements IController
 	{
 		if(($callback = @file_get_contents(Config::NLTK_SERVER())))
 		{
-			//if(\Epi\Epi::getSetting('debug'))
-			//	\Epi\getDebug()->addMessage(__CLASS__, sprintf('Call %s : %s : %s : %s', $httpMethod, $route, json_encode($def['callback']), json_encode($arguments)));
+			//self::debug(sprintf('Call %s : %s : %s : %s', $httpMethod, $route, json_encode($def['callback']), json_encode($arguments)));
 			var_dump(json_decode($callback,true)	);
 				
 		}
@@ -95,7 +94,7 @@ class APIController implements IController
 	 *
 	 * @return array
 	 */
-	static public function Debug()
+	static public function Version()
 	{
 		return array(
 				'version' => '0.1',
@@ -124,6 +123,22 @@ class APIController implements IController
 	//$json['version'] = $essay;
 	return $json;
 	}*/
+	
+	function Truncate($string, $length, $stopanywhere=false) {
+		//truncates a string to a certain char length, stopping on a word if not specified otherwise.
+		if (strlen($string) > $length) {
+			//limit hit!
+			$string = substr($string,0,($length -3));
+			if ($stopanywhere) {
+				//stop anywhere
+				$string .= '...';
+			} else{
+				//stop on a word.
+				$string = substr($string,0,strrpos($string,' ')).'...';
+			}
+		}
+		return $string;
+	}
 
 	/**
 	 * Return the user profile
@@ -131,10 +146,50 @@ class APIController implements IController
 	 * @return string
 	 */
 	static public function UserID($user)
-	{
+	{		
+		$temp_oa_dir = self::getTempDir();
+		//self::debug('$temp_oa_dir => ' .  print_r($temp_oa_dir,true));
+		
+		
+		$dirs = array_filter(glob($temp_oa_dir . DIRECTORY_SEPARATOR . '*'), 'is_dir');
+		if (empty($dirs))
+		{
+			$res = mkdir($temp_oa_dir . '/h810_tma01');
+		}
+		
 		$json = (array)json_decode(file_get_contents("data/schema-user.json"),true);
 		$json['userid'] = $user;
+		
+		
+		$tasks = array();
+		foreach ($dirs as $dir)
+		{
+			//var_dump($dir);
+			$glob = $dir . DIRECTORY_SEPARATOR . '*.txt';
+			//var_dump($glob);
+			$files = array_filter(glob($dir . DIRECTORY_SEPARATOR . '*.txt'), 'is_file');
+			//var_dump($files);
+			//self::debug('$files => ' .  print_r($files,true));
+				
+				
+			$id = basename($dir);
+			$name = explode("_", $id);
+			$name = strtoupper("".join(" - ",$name));
+			$tasks[] = array(
+					'id'=> $id,
+					'task' => $name,
+					'deadline' => '2012-10-08',
+					'drafts' => count($files),
+					'title' => 'no title',
+					'desc' => 'no description'
+			);
+		}
+		$json['tasks'] = $tasks;
+		
+		//$ret = file_put_contents("data/schema-user.json", json_encode($json));
+		//var_dump($json);
 		return $json;
+		
 	}
 
 	/**
@@ -156,16 +211,45 @@ class APIController implements IController
 	 */
 	static public function TaskID($user,$task)
 	{
-		$json = (array)json_decode(file_get_contents("data/schema-task.json"),true);
+		$json22 = (array)json_decode(file_get_contents("data/schema-alltasks.json"),true);
+
+		$json = $json22[$task];
+		$temp_oa_dir = self::getTempDir($task);
+		//$dir = $temp_oa_dir . "/" . $task;
+		
+		//var_dump($temp_oa_dir);
+		$glob = $temp_oa_dir . DIRECTORY_SEPARATOR . '*.txt';
+		//var_dump($glob);
+		$files = array_filter(glob($glob), 'is_file');
+				
 		$json['userid'] = $user;
 		$json['taskid'] = $task;
+
+		
+		$drafts = array();
+		$inc = 0;
+		foreach ($files as $file)
+		{
+			$id = basename($file,'.txt');
+			//var_dump($id);
+			
+			$drafts[] = array(
+					'id'=> 'v' . (++$inc),
+					'ref' => $id,
+					'desc' => ''
+			);
+		}
+		$json['essays'] = $drafts;
+		//var_dump($json);
+		
 		return $json;
 	}
 
 	static public function Essays($user,$task)
 	{
 		$json = self::TaskID($user,$task);
-		return array("essays" => $json['essays']);
+		//return array("essays" => $json['essays']);
+		return $json;
 	}
 	
 	
@@ -178,8 +262,22 @@ class APIController implements IController
 			return $json;
 			die();
 		}
+		
+		$temp_oa_dir = self::getTempDir($task);
+		$file = $temp_oa_dir . '/' . $essay . '.txt';
+		
+		
+		$json = (array)json_decode(file_get_contents($file),true);
+		
+		
+		$json['userid'] = $user;
+		$json['taskid'] = $task;
+		
+		return $json;
+		
+		die();
 
-		$file = file_get_contents("data/TMA01_H810_Submit.txt");
+		/*$file = file_get_contents("data/TMA01_H810_Submit.txt");
 		$order   = array("  ");
 		$replace = ' ';
 
@@ -234,7 +332,7 @@ class APIController implements IController
 		$json['version'] = $essay;
 		$json['stats'] = array('wordcount' => str_word_count($file));
 		$json['text'] = $myarray;
-		return $json;
+		return $json;*/
 	}
 
 

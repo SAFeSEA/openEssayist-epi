@@ -2,18 +2,18 @@
 
 /*
  * Autoload the model definition files, if any.
-*
-* @param string $className the class to attempt to load
+ *
+ * @param string $className the class to attempt to load
 
 function __autoload($className) {
-	$currentDir = substr(__FILE__, 0, strrpos(__FILE__, '/'));
-	if (file_exists($currentDir . '/' . $className . '.php')) {
-		include $currentDir . '/' . $className . '.php';
-	} elseif (file_exists($currentDir . '/../model/' . $className . '.php')) {
-		include $currentDir . '/../model/' . $className . '.php';
-	}
+    $currentDir = substr(__FILE__, 0, strrpos(__FILE__, '/'));
+    if (file_exists($currentDir . '/' . $className . '.php')) {
+        include $currentDir . '/' . $className . '.php';
+    } elseif (file_exists($currentDir . '/../model/' . $className . '.php')) {
+        include $currentDir . '/../model/' . $className . '.php';
+    }
 }
-*/
+ */
 
 /**
  * A wrapper for sending HTTP queries to external APIs
@@ -30,20 +30,18 @@ class APIClient {
 	public static $XML = "text/xml";
 	public static $JSON = "application/json";
 
-	public function getCalledURL(){
+	public function getCalledURL() {
 		return $this->callURL;
 	}
-
 
 	/**
 	 * @param string $apiServer the address of the API server
 	 * @param string $proxy the proxy to use to access the server
 	 */
-	function __construct($apiServer,$proxy=null) {
+	function __construct($apiServer, $proxy = null) {
 		$this->apiServer = $apiServer;
 		$this->proxyServer = $proxy;
 	}
-	
 
 	/**
 	 * Shorten a string to a given length.
@@ -53,12 +51,10 @@ class APIClient {
 	 * @param string $end	 the ellipsis for the replaced parts of the string 
 	 * @return string
 	 */
-	private function addEllipsis($string, $length=60, $end="...")
-	{
+	private function addEllipsis($string, $length = 60, $end = "...") {
 		//$r = ($length - strlen($end));
 		return (strlen($string) > $length) ? substr($string, 0, ($length - strlen($end))) . $end : $string;
 	}
-
 
 	/**
 	 * Call an external API
@@ -70,10 +66,10 @@ class APIClient {
 	 * @return string the JSON-encoded result of the query, if any.
 	 * @throws \Exception
 	 */
-	public function callAPI($resourcePath, $method = 'GET', $queryParams = null, $postData=null,$headerParams= null) {
+	public function callAPI($resourcePath, $method = 'GET', $queryParams = null, $postData = null, $headerParams = null) {
 
 		$headers = array();
-		$headers[] = "Content-type: ". self::$JSON;
+		$headers[] = "Content-type: " . self::$JSON;
 
 		if ($headerParams != null) {
 			foreach ($headerParams as $key => $val) {
@@ -81,31 +77,25 @@ class APIClient {
 			}
 		}
 
-		//var_dump($method);
 		
 		if (is_object($postData) or is_array($postData)) {
 			//$postData = json_encode($postData);
 			$postData = http_build_query($postData);
-			//var_dump($postData);
 		}
-		
 
 		$url = $this->apiServer . $resourcePath;
-
 		$curl = curl_init();
-		curl_setopt($curl, CURLOPT_TIMEOUT, 10);
+		curl_setopt($curl, CURLOPT_TIMEOUT, 20);
 		// return the result on success, rather than just TRUE
 
-
 		if ($method == self::$GET) {
-		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-		curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
-		if (! empty($queryParams)) {
+			curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+			curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+			if (!empty($queryParams)) {
 				$url = ($url . '?' . http_build_query($queryParams));
 			}
 		} else if ($method == self::$POST) {
-		//var_dump($postData);
-		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+			curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 			curl_setopt($curl, CURLOPT_POST, true);
 			curl_setopt($curl, CURLOPT_POSTFIELDS, $postData);
 		} else if ($method == self::$PUT) {
@@ -120,7 +110,7 @@ class APIClient {
 		}
 
 		curl_setopt($curl, CURLOPT_URL, $url);
-		if (! empty($this->proxyServer))
+		if (!empty($this->proxyServer))
 			curl_setopt($curl, CURLOPT_PROXY, $this->proxyServer);
 		//curl_setopt($curl, CURLOPT_PROXYPORT, 80);
 		// Make the request
@@ -128,43 +118,46 @@ class APIClient {
 		$response_info = curl_getinfo($curl);
 
 		$this->callURL = $url;
-		
-		//var_dump($response);var_dump($response_info);
+
 
 		// Handle the response
-		if ($response_info['http_code'] == 0) {
-			throw new \Exception("TIMEOUT: api call to " . $this->addEllipsis($url) .
-					" took more than 5s to return");
-		} else if ($response_info['http_code'] == 200) {
+		if ($response_info['http_code'] == 0)
+		{
+			throw new \Exception("TIMEOUT: api call to " . $this->addEllipsis($url) . " took more than 5s to return", 408);
+		} 
+		else if ($response_info['http_code'] == 200)
+		{
 			if ($response_info['content_type'] == self::$XML)
 			{
 				$simpleXml = simplexml_load_string($response);
 				$data = json_encode($simpleXml);
-			}
+			} 
 			else
-				$data = json_decode($response,true);
-		} else if ($response_info['http_code'] == 401) {
-			throw new \Exception("Unauthorized API request to " . $this->addEllipsis($url) .
-					": ".json_decode($response)->message );
-		} else if ($response_info['http_code'] == 404) {
-			$data = null;
-		} else {
-			throw new \Exception("Can't connect to the api: " . $this->addEllipsis($url) .
-					" response code: " .
-					$response_info['http_code']);
+				$data = json_decode($response, true);
+		} 
+		else if ($response_info['http_code'] == 401)
+		{
+			throw new \Exception("Unauthorized API request to " . $this->addEllipsis($url) . ": " . json_decode($response)->message, 401);
+		}
+		//else if ($response_info['http_code'] == 404)
+		//{
+		//	throw new \Exception("Unauthorized API request to " . $this->addEllipsis($url) . ": " . json_decode($response)->message, 404);
+		//	$data = null;
+		//}
+		else
+		{
+			throw new \Exception("Can't connect to the api: " . $this->addEllipsis($url) . " response code: " . $response_info['http_code'], $response_info['http_code']);
 		}
 
 		return $data;
 	}
 
-
-
 	/*
 	 * Take value and turn it into a string suitable for inclusion in
-	* the path or the header
-	* @param object $object an object to be serialized to a string
-	* @return string the serialized object
-	*/
+	 * the path or the header
+	 * @param object $object an object to be serialized to a string
+	 * @return string the serialized object
+	 */
 	public static function toPathValue($object) {
 		if (is_array($object)) {
 			return implode(',', $object);
@@ -173,14 +166,13 @@ class APIClient {
 		}
 	}
 
-
 	/*
 	 * Derialize a JSON string into an object
-	*
-	* @param object $object object or primitive to be deserialized
-	* @param string $class class name is passed as a string
-	* @return object an instance of $class
-	*/
+	 *
+	 * @param object $object object or primitive to be deserialized
+	 * @param string $class class name is passed as a string
+	 * @return object an instance of $class
+	 */
 	public static function deserialize($object, $class) {
 
 		if (in_array($class, array('string', 'int', 'float', 'bool'))) {
@@ -196,16 +188,14 @@ class APIClient {
 			// Need to handle possible pluralization differences
 			$true_property = $property;
 
-			if (! property_exists($class, $true_property)) {
+			if (!property_exists($class, $true_property)) {
 				if (substr($property, -1) == 's') {
 					$true_property = substr($property, 0, -1);
-					if (! property_exists($class, $true_property)) {
-						trigger_error("class $class has no property $property"
-						. " or $true_property", E_USER_WARNING);
+					if (!property_exists($class, $true_property)) {
+						trigger_error("class $class has no property $property" . " or $true_property", E_USER_WARNING);
 					}
 				} else {
-					trigger_error("class $class has no property $property",
-					E_USER_WARNING);
+					trigger_error("class $class has no property $property", E_USER_WARNING);
 				}
 			}
 
@@ -217,8 +207,7 @@ class APIClient {
 				$sub_class = $matches[1];
 				$instance->{$true_property} = array();
 				foreach ($value as $sub_property => $sub_value) {
-					$instance->{$true_property}[] = self::deserialize($sub_value,
-							$sub_class);
+					$instance->{$true_property}[] = self::deserialize($sub_value, $sub_class);
 				}
 			} else {
 				$instance->{$true_property} = self::deserialize($value, $type);
@@ -227,6 +216,5 @@ class APIClient {
 		return $instance;
 	}
 }
-
 
 ?>

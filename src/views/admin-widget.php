@@ -13,7 +13,7 @@ foreach ($api as $test)
 <p>$api</p>
 <p>$description</p>
 </div>
-<pre class="prettyprint linenums">$output</pre>
+<pre class="bs-docs-code"><code class="json">$output</code></pre>
 
 TMC;
 }

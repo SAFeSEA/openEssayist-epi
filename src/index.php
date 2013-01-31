@@ -14,6 +14,7 @@ include_once "epi/Epi.php";
 include_once "controllers/api.class.php";
 include_once "controllers/user.class.php";
 include_once "controllers/admin.class.php";
+include_once "controllers/swagger.class.php";
 include_once 'apiclients/APISpellCheck.class.php';
 include_once 'apiclients/APIEssayAnalyser.class.php';
 include_once "data/constants.class.php";
@@ -26,11 +27,17 @@ include_once "data/constants.class.php";
 ***************************************************************************************/
 \Epi\Epi::setPath('base', './epi');
 \Epi\Epi::setPath('view', './views');
+\Epi\Epi::setPath('config', './config');
 
 \Epi\Epi::setSetting('debug', true);
-\Epi\Epi::setSetting('exceptions', faLse);
+\Epi\Epi::setSetting('exceptions', false);
 
-\Epi\Epi::init('api','route','template','debug','session');
+\Epi\Epi::init('api','route','template','debug','session','config');
+
+
+\Epi\getConfig()->load('default.ini');
+
+$config = \Epi\getConfig()->get();
 
 
 /***************************************************************************************
@@ -48,15 +55,20 @@ include_once "data/constants.class.php";
 \Epi\getRoute()->get('/logout', array('openEssayist\UserController','Logout'));
 //\Epi\getRoute()->get('/user', array('openEssayist\UserController','Dashboard'));
 \Epi\getRoute()->get('/me', array('openEssayist\UserController','Dashboard'));
-\Epi\getRoute()->get('/me/task', array('openEssayist\UserController','Access'));
+\Epi\getRoute()->get('/me/task', array('openEssayist\UserController','ListofTasks'));
 \Epi\getRoute()->get('/me/task/([\w-_]+)', array('openEssayist\UserController','ListofEssays'));
+\Epi\getRoute()->get('/me/task/([\w-_]+)/keyword', array('openEssayist\UserController','KeywordHistory'));
 \Epi\getRoute()->get('/me/task/([\w-_]+)/essay/([\w-_]+)', array('openEssayist\UserController','ShowEssay'));
 \Epi\getRoute()->get('/me/task/([\w-_]+)/essay/([\w-_]+)/dispersion', array('openEssayist\UserController','ShowDispersion'));
+\Epi\getRoute()->get('/me/task/([\w-_]+)/essay/([\w-_]+)/adjacency', array('openEssayist\UserController','ShowGraph'));
 \Epi\getRoute()->get('/me/task/([\w-_]+)/submit', array('openEssayist\UserController','SubmitEssay'));
 \Epi\getRoute()->post('/me/task/([\w-_]+)/submit', array('openEssayist\UserController','ProcessEssay'));
 
 // API routes
-\Epi\getApi()->get('/version.json', array('openEssayist\APIController','Debug'), \Epi\EpiApi::external);
+\Epi\getApi()->get('/api.json', array('openEssayist\SwaggerController','APIs'), \Epi\EpiApi::external);
+
+
+\Epi\getApi()->get('/version.json', array('openEssayist\APIController','Version'), \Epi\EpiApi::external);
 \Epi\getApi()->get('/user.json', array('openEssayist\APIController','Users'), \Epi\EpiApi::external);
 \Epi\getApi()->get('/user/(\w+).json', array('openEssayist\APIController','UserID'), \Epi\EpiApi::external);
 \Epi\getApi()->get('/user/(\w+)/task.json', array('openEssayist\APIController','Tasks'), \Epi\EpiApi::external);
