@@ -361,6 +361,7 @@ class UserController extends IController {
 				float: right;
 				}
 		</style>
+		<link rel="stylesheet" title="jTour" href="/bootstrap/jquery-tour/jquery.tour.css">
 EOF;
 
 		$params['injectJS'] = <<<EOF
@@ -492,6 +493,70 @@ $( "#sortable0, #sortable1, #sortable2, #sortable3" ).disableSelection();
 
 		});
 	</script>	
+	<script src="/bootstrap/jquery-tour/jquery.tour.js"></script>        			
+	<script>
+	(function(u, d, t) {
+		window.rx = true;
+		//console.log("fd");
+	})();
+
+	$(document)
+				.ready(
+						function() {
+							
+							var tourdata = [
+									{
+										html : "Hello World",
+        								showTab: $('#mytabs a[href="#review"]')
+									},
+									{
+										html : "Follow this rule - it's very important!",
+										element : $('div.alert-block'),
+										overlayOpacity : 0.5,
+										expose : true,
+										position : 'n'
+									},
+									{
+										html : "This is a codeblock which shows the example code",
+										element : $('pre'),
+										position : 'n'
+									}, {
+										html : "This is a paragraph",
+										element : 'div.btn-group',
+        								showTab: $('#mytabs a[href="#keywords"]'),
+        			overlayOpacity : 0.5,
+										expose : true,
+										position : 's'
+									}, {
+										html : "This is the second list entry",
+										element : $('div#keywords div.span3').eq(1),
+        			overlayOpacity : 0.5,
+										expose : true,
+										position : 'n'
+									} ];
+							var myTour = jTour(
+									tourdata,
+									{
+										axis : 'y',
+										onStop : function() {
+        										//alert("!ffddffddfdf");
+											
+										},
+										onChange : function(current) {
+											
+										},
+										onFinish : function(current) {
+											
+										},
+										scrollBack : true
+									});
+							$('#starttour').click(function() {
+								
+        						$('#mytabs a:first').click();
+        						myTour.restart();
+							});
+						});
+	</script>
 		
 EOF;
 
