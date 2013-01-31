@@ -1,0 +1,80 @@
+{
+	"h810_tma01" : {
+		"taskid" : "h810_tma01",
+		"title": "Accessibility Challenges",	
+		"description": [ 
+			"Write a report  explaining the main accessibility challenges for Disabled Learners that you work with or support in your own word context"
+		],	
+		"deadline": "2012-11-25",	
+		"metadata": {
+			"wordcount": 1500,
+			"process" : ["word1","word2"]
+		}
+	},
+	"h810_tma02" : {
+		"taskid" : "h810_tma02",
+		"title": "Critical Evaluation of an Accessible Learning Resource",	
+		"description": [ 
+			"Critically evaluate your own learning resource in the following ways",
+			"1- Briefly describe the resource and its accessibility features. Compare these to one learning resource created by another student in your tutor group.",		
+			"2. Evaluate the accessibility of your resource, identifying its strengths and weaknesses. Propose, with justification, ways in which its accessibility could be improved. (This could include suggesting alternatives.)",
+			"3. Reflect on the processes of creating and evaluating accessible resources. Use the research and practice literature to explain and understand your experiences of these processes."
+		],	
+		"deadline": "2012-11-25",	
+		"metadata": {
+			"wordcount": 1500,
+			"process" : ["word1","word2"]
+		}
+	},
+	"workshop" : {
+		"taskid" : "workshop",
+		"title": "Accessibility Challenges",	
+		"description": [ 
+			"Write a report  explaining the main accessibility challenges for Disabled Learners that you work with or support in your own word context",
+			"If you're not a practitioner, write from the perspective of a person in a relevant context.",
+			"Critically evaluate the influence of the context (e.g. country, institution, educational sector, perceived role of online learning within education) on the:",
+			"1- identified challenges",
+			"2- influence of legislation",
+			"3- roles and responsibilities of key individuals",
+			"4- role of assistive technologies in addressing these challenges.",
+			"Remember to give a word count at the end of your assignment. You will need to be selective in what you write about and how you write about it, because you will be writing about subjects on which you are the expert (yourself and your working or other chosen context). The sort of report that you are being asked to write would and should be read by other people who share the same working context; however, they are busy people with many other commitments, so be concise."
+		],	
+		"deadline": "2012-11-25",	
+		"metadata": {
+			"wordcount": 1500,
+			"process" : ["word1","word2"]
+		}
+	},
+	"boardmeeting" : {
+		"taskid" : "boardmeeting",
+		"title": "Accessibility Challenges",	
+		"description": [ 
+			"Write a report  explaining the main accessibility challenges for Disabled Learners that you work with or support in your own word context",
+			"If you're not a practitioner, write from the perspective of a person in a relevant context.",
+			"Critically evaluate the influence of the context (e.g. country, institution, educational sector, perceived role of online learning within education) on the:",
+			"1- identified challenges",
+			"2- influence of legislation",
+			"3- roles and responsibilities of key individuals",
+			"4- role of assistive technologies in addressing these challenges.",
+			"Remember to give a word count at the end of your assignment. You will need to be selective in what you write about and how you write about it, because you will be writing about subjects on which you are the expert (yourself and your working or other chosen context). The sort of report that you are being asked to write would and should be read by other people who share the same working context; however, they are busy people with many other commitments, so be concise."
+		],	
+		"deadline": "2012-11-25",	
+		"metadata": {
+			"wordcount": 1500,
+			"process" : ["word1","word2"]
+		}
+	},
+	"versions" : {
+		"taskid" : "versions",
+		"title": "Accessibility Challenges",	
+		"description": [ 
+			"Write a report  explaining the main accessibility challenges for Disabled Learners that you work with or support in your own word context",
+			"<p><i>NOTE: mock-up of a history of drafts of the same essay</i></p>"
+		],	
+		"deadline": "2012-11-25",	
+		"metadata": {
+			"wordcount": 1500,
+			"process" : ["word1","word2"]
+		}
+	}	
+}
