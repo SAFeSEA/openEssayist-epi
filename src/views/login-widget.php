@@ -17,8 +17,8 @@
 <div class="span6 offset3">
 <form class="form-signin" action='/login' method='POST'>
 	<h2 class="form-signin-heading">Please sign in</h2>
-	<input type="text" placeholder="Email address"
-		class="input-block-level tt"> <input type="password"
+	<input type="text" placeholder="Username" name="username" id="username" 
+		class="input-block-level tt"> <input type="password" name="password" id="password"
 		placeholder="Password" class="input-block-level"> <label
 		class="checkbox"> <input type="checkbox" value="remember-me"> Remember
 		me

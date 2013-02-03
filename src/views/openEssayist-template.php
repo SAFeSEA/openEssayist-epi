@@ -42,11 +42,11 @@
 				<a class="brand" href="/"><img class="brand-ico"
 					src="/bootstrap/img/openEssayist-icon.png">openEssayist</a>
 
-				<?php if($username) : ?>
+				<?php if ($username) : ?>
 				<div class="btn-group pull-right">
 					<a class="btn dropdown-toggle" data-toggle="dropdown"
 						title="dfsdf sdfs df sadf sdf sad" href="#"> <i class="icon-user"></i>
-						Username <span class="caret"></span>
+						<?php echo $username ?> <span class="caret"></span>
 					</a>
 					<ul class="dropdown-menu">
 						<li><a href="#">Profile</a></li>
@@ -63,6 +63,8 @@
 							title="Overview of your essays and feedback"><i
 								class="icon-tasks"></i> Dashboard</a>
 						</li>
+						
+						<?php if($admin) : ?>
 						<li class="dropdown"><a href="#" class="dropdown-toggle"
 							data-placement="bottom" rel="tooltip"
 							title="Restricted access to administrative tools"
@@ -70,13 +72,14 @@
 						</a>
 							<ul class="dropdown-menu">
 								<li class="nav-header">Configuration</li>
-								<li><a href="#">Administation</a></li>
+								<li><a href="/admin">Administation</a></li>
 								<li class="divider"></li>
 								<li class="nav-header">Documentation</li>
 								<li><a href="/admin/api">RESTful APIs</a></li>
 								<li><a href="/admin/service">Web Services</a></li>
 							</ul>
 						</li>
+						<?php endif;?>
 					</ul>
 				</div>
 				<?php endif; ?>

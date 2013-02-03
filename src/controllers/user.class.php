@@ -14,11 +14,6 @@ class UserController extends IController {
 	 */
 	static public function Home()
 	{
-		//if (\Epi\getSession()->get(Constants::LOGGED_IN) == false)
-		//{
-		//	\Epi\getRoute()->redirect('/login');
-		//}
-
 		$widget = \Epi\getTemplate()->get('welcome-widget.php');
 				
 		$params = array(
@@ -34,9 +29,7 @@ class UserController extends IController {
 	 */
 	static public function Dashboard()
 	{
-		if (\Epi\getSession()->get(Constants::LOGGED_IN) == false) {
-			\Epi\getRoute()->redirect('/login');
-		}
+		if (!self::isUser()) \Epi\getRoute()->redirect('/login');
 
 		$widget = \Epi\getTemplate()->get('dashboard-widget.php');
 
@@ -60,11 +53,8 @@ class UserController extends IController {
 	 */
 	static public function ListofTasks()
 	{
-		if (\Epi\getSession()->get(Constants::LOGGED_IN) == false)
-		{
-			\Epi\getRoute()->redirect('/login');
-		}
-
+		if (!self::isUser()) \Epi\getRoute()->redirect('/login');
+		
 		//$apiParams = \Epi\getApi()->invoke('/user/UID.json');
 		$apiTask = \Epi\getApi()->invoke('/user/UID/task.json');
 
@@ -81,11 +71,10 @@ class UserController extends IController {
 	}
 
 
-	static public function ListofEssays($task) {
-		if (\Epi\getSession()->get(Constants::LOGGED_IN) == false) {
-			\Epi\getRoute()->redirect('/login');
-		}
-
+	static public function ListofEssays($task)
+	{
+		if (!self::isUser()) \Epi\getRoute()->redirect('/login');
+		
 		//var_dump($_REQUEST);
 		//var_dump($_GET);
 		//var_dump($_POST);
@@ -145,9 +134,8 @@ class UserController extends IController {
 
 	static public function SubmitEssay($task)
 	{
-		if (\Epi\getSession()->get(Constants::LOGGED_IN) == false) {
-			\Epi\getRoute()->redirect('/login');
-		}
+		if (!self::isUser()) \Epi\getRoute()->redirect('/login');
+
 		//var_dump($_REQUEST);
 		//var_dump($_POST);
 		//var_dump($_GET);
@@ -187,9 +175,6 @@ class UserController extends IController {
 	}
 
 	static public function ProcessEssay($task) {
-		//var_dump($_REQUEST);
-		//var_dump($_POST);
-		//var_dump($_SERVER);
 
 		if ("Cancel" === $_POST['action']) {
 			$ff = $_REQUEST['__route__'];
@@ -198,10 +183,8 @@ class UserController extends IController {
 			die();
 		}
 		
-		if (\Epi\getSession()->get(Constants::LOGGED_IN) == false) {
-			\Epi\getRoute()->redirect('/login');
-		}
-		
+		if (!self::isUser()) \Epi\getRoute()->redirect('/login');
+				
 		
 		$temp_oa_dir = self::getTempDir($task);
 
@@ -302,7 +285,8 @@ class UserController extends IController {
 	}
 
 	static public function ShowEssay($task, $essay) {
-
+		if (!self::isUser()) \Epi\getRoute()->redirect('/login');
+		
 		//var_dump($_REQUEST);
 		//var_dump($essay);
 		//var_dump($task);
@@ -577,7 +561,6 @@ EOF;
 		$params = array();
 		$params['heading'] = 'openEssayist';
 		$params['content'] = $ff;
-
 		IController::showTemplate('openEssayist-template.php', $params);
 
 	}
@@ -585,27 +568,39 @@ EOF;
 	/**
 	 * 
 	 */
-	static public function ProcessLogin() {
-		\Epi\getSession()->set(Constants::LOGGED_IN, true);
+	static public function ProcessLogin()
+	{
+		// clean user & password
+		$user = strip_tags(substr($_POST['username'],0,32));
+		$pw = strip_tags(substr($_POST['password'],0,32));
 
+		// RIDICULOUS but let's try
+		$config = \Epi\getConfig()->get("admin");
+		$admin_pwd = crypt($config);
+		
+		// check admin password		
+		if (crypt($pw, $admin_pwd) == $admin_pwd) {
+			\Epi\getSession()->set(Constants::ADMIN_IN, true);
+			
+		}
+		
+		\Epi\getSession()->set(Constants::USERNAME, $user);
+		\Epi\getSession()->set(Constants::LOGGED_IN, true);
 		\Epi\getRoute()->redirect('/me');
 	}
 
 	/**
 	 * 
 	 */
-	static public function Logout() {
-		// Redirect to the logged in home page
-		\Epi\getSession()->set(Constants::LOGGED_IN, false);
-
+	static public function Logout()
+	{
+		\Epi\getSession()->end();
 		\Epi\getRoute()->redirect('/');
 	}
 
 	static public function Dashboard2() {
-		if (\Epi\getSession()->get(Constants::LOGGED_IN) == false) {
-			\Epi\getRoute()->redirect('/login');
-		}
-
+		if (!self::isUser()) \Epi\getRoute()->redirect('/login');
+		
 		$apiParams2 = \Epi\getApi()->invoke('/user/UID.json');
 		$apiParams2 = \Epi\getApi()->invoke('/user/UID/task/UID.json');
 
@@ -658,10 +653,8 @@ EOF;
 	}
 
 	static public function KeywordHistory($task) {
-		if (\Epi\getSession()->get(Constants::LOGGED_IN) == false) {
-			\Epi\getRoute()->redirect('/login');
-		}
-
+		if (!self::isUser()) \Epi\getRoute()->redirect('/login');
+		
 		//var_dump($_REQUEST);
 		//var_dump($_GET);
 		//var_dump($_POST);
@@ -1077,10 +1070,8 @@ EOF;
 
 	static public function ShowDispersion($task, $essay) {
 		
-		if (\Epi\getSession()->get(Constants::LOGGED_IN) == false) {
-			\Epi\getRoute()->redirect('/login');
-		}
-		
+		if (!self::isUser()) \Epi\getRoute()->redirect('/login');
+				
 		
 		// Retrieve the essay data
 		$apurl = '/user/UID/task/' . $task . '/essay/' . $essay . '.json';
@@ -1298,10 +1289,8 @@ EOF;
 	
 	static public function ShowGraph($task, $essay) 
 	{
-		if (\Epi\getSession()->get(Constants::LOGGED_IN) == false) {
-			\Epi\getRoute()->redirect('/login');
-		}
-		
+		if (!self::isUser()) \Epi\getRoute()->redirect('/login');
+				
 		
 		$apurl = '/user/UID/task/' . $task . '/essay/' . $essay . '.json';
 		$apiTask = \Epi\getApi()->invoke($apurl);

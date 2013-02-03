@@ -9,11 +9,10 @@
 					&raquo;</a>
 
 				<?php if($username) : ?>
-					
-				<a href="/login" class="btn btn-large">Login
-					&raquo;</a>
-				<?php endif; ?>					
-						</p>
+
+				<a href="/login" class="btn btn-large">Login &raquo;</a>
+				<?php endif; ?>
+			</p>
 		</div>
 	</div>
 </div>

@@ -9,19 +9,8 @@ class Constants
 	/**
 	 * @var unknown
 	 */
+	const USERNAME = 'username';
 	const LOGGED_IN = 'logged_in';
+	const ADMIN_IN = 'admin_logged_in';
 }
-
-
-class Config
-{
-	const NLTK_SERVER_NAME = "localhost";
-	const NLTK_SERVER_PORT = "5000";
-	
-	static public function NLTK_SERVER()
-	{
-		return  "http://" . Config::NLTK_SERVER_NAME . ":" . self::NLTK_SERVER_PORT . "/";
-	}
-}
-
 ?>

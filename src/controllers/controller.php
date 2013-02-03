@@ -18,6 +18,17 @@ abstract class IController
 			\Epi\getDebug()->addMessage(get_called_class(), $msg);
 	}
 	
+	static protected function isUser()
+	{
+		return (\Epi\getSession()->get(Constants::LOGGED_IN) == true);
+	}
+
+	static protected function isAdmin()
+	{
+		return (\Epi\getSession()->get(Constants::ADMIN_IN) == true);
+	}
+	
+	
 	/**
 	 * 
 	 * @param string $templatename
@@ -28,7 +39,13 @@ abstract class IController
 		// add the username (if logged in) into the param
 		if (\Epi\getSession()->get(Constants::LOGGED_IN) == true)
 		{
-			$params['username'] = 'username';
+			$user = \Epi\getSession()->get(Constants::USERNAME) ? : "username";
+			$params['username'] = $user;
+		}
+		if (\Epi\getSession()->get(Constants::ADMIN_IN) == true)
+		{
+			$params['username'] = 'Admin';
+			$params['admin'] = 'admin';
 		}
 		
 		// Generate and display the template

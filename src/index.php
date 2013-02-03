@@ -34,10 +34,7 @@ include_once "data/constants.class.php";
 
 \Epi\Epi::init('api','route','template','debug','session','config');
 
-
 \Epi\getConfig()->load('default.ini');
-
-$config = \Epi\getConfig()->get();
 
 
 /***************************************************************************************
@@ -45,15 +42,18 @@ $config = \Epi\getConfig()->get();
 ***************************************************************************************/
 \Epi\getRoute()->get('/', array('openEssayist\UserController','Home'));
 
+// Administration routes
+\Epi\getRoute()->get('/admin', array('openEssayist\AdminController','AdminPanel'));
 \Epi\getRoute()->get('/admin/api', array('openEssayist\AdminController','APIs'));
 \Epi\getRoute()->get('/admin/service', array('openEssayist\AdminController','Services'));
+\Epi\getRoute()->get('/admin/service/([\w-_]+)', array('openEssayist\AdminController','TestServices'));
 
-
-
+// Login/logout routes
 \Epi\getRoute()->get('/login', array('openEssayist\UserController','Login'));
 \Epi\getRoute()->post('/login', array('openEssayist\UserController','ProcessLogin'));
 \Epi\getRoute()->get('/logout', array('openEssayist\UserController','Logout'));
-//\Epi\getRoute()->get('/user', array('openEssayist\UserController','Dashboard'));
+
+// User, Essay and feedback routes
 \Epi\getRoute()->get('/me', array('openEssayist\UserController','Dashboard'));
 \Epi\getRoute()->get('/me/task', array('openEssayist\UserController','ListofTasks'));
 \Epi\getRoute()->get('/me/task/([\w-_]+)', array('openEssayist\UserController','ListofEssays'));
@@ -67,7 +67,6 @@ $config = \Epi\getConfig()->get();
 // API routes
 \Epi\getApi()->get('/api.json', array('openEssayist\SwaggerController','APIs'), \Epi\EpiApi::external);
 
-
 \Epi\getApi()->get('/version.json', array('openEssayist\APIController','Version'), \Epi\EpiApi::external);
 \Epi\getApi()->get('/user.json', array('openEssayist\APIController','Users'), \Epi\EpiApi::external);
 \Epi\getApi()->get('/user/(\w+).json', array('openEssayist\APIController','UserID'), \Epi\EpiApi::external);
@@ -79,21 +78,12 @@ $config = \Epi\getConfig()->get();
 \Epi\getApi()->get('/user/(\w+)/task/(\w+)/essay/(\w+)/feedback.json', array('openEssayist\APIController','EssayFeedback'), \Epi\EpiApi::external);
 
 // catchall route (404)
-\Epi\getRoute()->get('/test/([\w-_]+)', 'openEssayist\testReg');
-
 \Epi\getRoute()->get('.*', 'openEssayist\error404');
 
 \Epi\getRoute()->run();
 
-
-function testReg($ffffff) {
-	var_dump($ffffff);
-	var_dump($route);
-	echo "<h1>404 Page Does Not Exist</h1>";
-}
-
 /**
- *
+ * Handler for unknown URLs
 */
 function error404() {
 	$protocol = (isset($_SERVER['SERVER_PROTOCOL']) ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.0');
