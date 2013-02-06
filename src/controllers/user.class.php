@@ -1296,6 +1296,16 @@ EOF;
 		$apiTask = \Epi\getApi()->invoke($apurl);
 		$ret = $apiTask;
 		
+		$func = function($v) {
+			$elt = $v['ngram'];
+			return "".join(" ",$elt);
+		};
+		
+		self::debug('$apiTask => ' . print_r(array_keys($apiTask), true));
+		$names1 = array_map($func, $apiTask['bigrams']);
+		//$names2 = array_map($func, $ar2);
+		var_dump($names1);
+		
 		
 		/** Generate the template **/
 		$ff = \Epi\getTemplate()->get('breadcrumb.widget.php', array(
@@ -1312,24 +1322,77 @@ EOF;
 		$graph = ($graph) ?: $ret['graph'];
 		
 		$serieszz = $graph['nodes'];
+		$names2 = array_map(function($v) { return  $v['id']; } , $serieszz);
+		$nodes = array_map(function($v) { return  array(
+				'nodeName' => $v['id'],
+				'group' => 1); } , $serieszz);
+		
+		$series2 = $graph['adjacency'];
+		//var_dump(series2,count($series2));
+		
+		//$serieszz = array_slice($serieszz,0,10);
+		//$series2 = array_slice($series2,0,10);
+		//var_dump($names2[1],$series2[1]);
+		//var_dump($names2);
+		//var_dump(array_search("aria",$names2));
+		
+		$series2 = array_slice($series2,0,100);
+		$links = array();
+		foreach ($series2 as $key => $element)
+		{
+			
+			$source = $key;
+			foreach($element as $id => $node)
+			{
+				$dest = $node['id'];
+				$dest = array_search($dest,$names2);
+				//var_dump($dest,1);
+				//$dest = array_search($dest, $name2);
+				if ($dest) $links[] = array(
+						"source" => $source,
+						"target" => $dest,
+						"value" => 1
+						);
+			}
+			
+		}
+		//var_dump($links);
+		
+		
+		/*
 		$nodes = array();
 		foreach ($serieszz as $key => &$element)
 		{
+			$inc  =0;
 			$element = $element['id'];
-			$nodes[] = array(
-					"nodeName" => $element
+			//var_dump("1- " . $element . " " . $tt);
+			foreach ($names1 as $idx => $mot)
+			{
+				$tt = preg_match("/\b".preg_quote($element)."\b/i",$mot);
+				//var_dump($tt);
+				if ($tt) { $inc = $idx+1;  }
+			}
+			//var_dump("2- " . $element . " " . $inc);
+			
+			$gggggg = array(
+					"nodeName" => $element,
+					"group" => $inc
 					);
+			
+			$nodes[] = $gggggg;
 		}
 		//$serieszz = json_encode(array_flip($serieszz));
-		//var_dump($serieszz);
+		
 		
 		//$series2 = json_encode($ret['graph']['adjacency']);
 		$series2 = $graph['adjacency'];
 		$links = array();
+		//var_dump($series2);
 		foreach ($series2 as $key => $element)
 		{
 			$weight = count($element);
 			// Get source  
+			
 			$sourceElt = array_shift($element);
 			$source = $sourceElt['id'];
 			$source = array_search($source,$serieszz);
@@ -1346,13 +1409,20 @@ EOF;
 						"target" => $target,
 						"value" => $weight
 					);
-					$source = $target;
+					//$source = $target;
 				}
 			}
 			
-		}
-		$nodes = json_encode(array_slice($nodes,0,10000));
-		$links = json_encode(array_slice($links,0,18000));
+		}*/
+		
+		
+		
+		
+		//var_dump($names2);
+		
+		
+		$nodes = json_encode(($nodes));
+		$links = json_encode(($links));
 		
 		//var_dump(array_keys($ret['graph']));
 		//var_dump($nodes);
@@ -1370,7 +1440,7 @@ EOF;
 
 var w = document.body.clientWidth,
     h = document.body.clientHeight,
-    colors = pv.Colors.category19();
+    colors = pv.Colors.category20();
 
 var vis = new pv.Panel()
 	.canvas('container')
@@ -1385,11 +1455,11 @@ var force = vis.add(pv.Layout.Force)
 force.link.add(pv.Line);
 
 force.node.add(pv.Dot)
-    .size(function(d) (d.linkDegree*3 + 4) * Math.pow(this.scale, -1.5))
+    .size(function(d) (d.group*3 + 4) * Math.pow(this.scale, -1.5))
     .fillStyle(function(d) d.fix ? "brown" : colors(d.group))
     .strokeStyle(function() this.fillStyle().darker())
     .lineWidth(1)
-    .title(function(d) d.nodeName)
+    .title(function(d) d.nodeName + " (" + d.group + ")")
     .event("mousedown", pv.Behavior.drag())
     .event("drag", force);
 				
