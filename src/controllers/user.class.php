@@ -174,6 +174,35 @@ class UserController extends IController {
 		IController::showTemplate('openEssayist-template.php', $params);
 	}
 
+	static public function UpdateEssay($task, $essay)
+	{
+		if (!self::isUser()) \Epi\getRoute()->redirect('/login');
+		
+		$apurl = '/user/UID/task/' . $task . '/essay/' . $essay . '.json';
+		$apiTask = \Epi\getApi()->invoke($apurl);
+		
+		$params = array();
+		$params['heading'] = 'Submit Draft';
+		$params['breadcrumb'] = $bc;
+		$params['content'] = $ff;
+		
+		/** @var Essay */
+		$basket = new Essay($apiTask);
+		
+		$textarr = $basket->getFullText();
+		
+		$apiTask = \Epi\getApi()->invoke($apurl,\Epi\EpiRoute::httpPut,array(
+				'text' => $textarr
+		));
+		$apiTask = \Epi\getApi()->invoke($apurl,\Epi\EpiRoute::httpPost,array(
+				'text' => $textarr
+		));
+		
+		//var_dump($textarr);
+		
+		IController::showTemplate('openEssayist-template.php', $params);
+	}
+	
 	static public function ProcessEssay($task) {
 
 		if ("Cancel" === $_POST['action']) {
@@ -1296,16 +1325,74 @@ EOF;
 		$apiTask = \Epi\getApi()->invoke($apurl);
 		$ret = $apiTask;
 		
+
+		
+		
 		$func = function($v) {
 			$elt = $v['ngram'];
 			return "".join(" ",$elt);
 		};
 		
 		self::debug('$apiTask => ' . print_r(array_keys($apiTask), true));
-		$names1 = array_map($func, $apiTask['bigrams']);
-		//$names2 = array_map($func, $ar2);
-		var_dump($names1);
+
+		// Extract the bigrams as joined strings
+		$bigrams = array_map($func, $apiTask['bigrams']);
+
+		// backward compatibility
+		$graph = (isset($ret['graph_sub'])) ? $ret['graph_sub'] : null;
+		$graph = (isset($ret['graph_adjacency'])) ? $ret['graph_adjacency'] : null;
+		$graph = ($graph) ?: $ret['graph'];
+
 		
+		
+		//Get node data, names and reorganise structure for display
+		$nodedata = $graph['nodes'];
+		$nodenames = array_map(function($v) { return  $v['id']; } , $nodedata);
+
+		$nodes = array();
+		foreach ($nodedata as $id => $node)
+		{
+			$elt = $node['id'];
+			$inc=0;
+			
+			// Group node by bigrams
+			foreach ($bigrams as $idx => $mot)
+			{
+				$tt = preg_match("/\b".preg_quote($elt)."\b/i",$mot);
+				if ($tt) { $inc = count($bigrams)-$idx+1;}
+			}
+			$nodes[] = array(
+					'nodeName' => $elt,
+					'group' => $inc
+			);
+		}
+
+		$adjacencydata = $graph['adjacency'];
+		$links = array();
+		foreach ($adjacencydata as $key => $element)
+		{
+			$source = $key;
+			foreach($element as $id => $node)
+			{
+				$dest = $node['id'];
+				$dest = array_search($dest,$nodenames);
+				
+				if ($dest) $links[] = array(
+						"source" => $source,
+						"target" => $dest,
+						"value" => 1
+						);
+			}
+			
+		}
+
+		$nodes = json_encode(($nodes));
+		$links = json_encode(($links));
+		
+		//var_dump(array_keys($ret['graph']));
+		//var_dump($nodes);
+		//var_dump($links);
+		//var_dump($ret['graph']['adjacency']);
 		
 		/** Generate the template **/
 		$ff = \Epi\getTemplate()->get('breadcrumb.widget.php', array(
@@ -1317,117 +1404,6 @@ EOF;
 		$params['heading'] = 'openEssayist';
 		$params['breadcrumb'] = $ff;
 		
-		// backward compatibility
-		$graph = (isset($ret['graph_adjacency'])) ? $ret['graph_adjacency'] : null;
-		$graph = ($graph) ?: $ret['graph'];
-		
-		$serieszz = $graph['nodes'];
-		$names2 = array_map(function($v) { return  $v['id']; } , $serieszz);
-		$nodes = array_map(function($v) { return  array(
-				'nodeName' => $v['id'],
-				'group' => 1); } , $serieszz);
-		
-		$series2 = $graph['adjacency'];
-		//var_dump(series2,count($series2));
-		
-		//$serieszz = array_slice($serieszz,0,10);
-		//$series2 = array_slice($series2,0,10);
-		//var_dump($names2[1],$series2[1]);
-		//var_dump($names2);
-		//var_dump(array_search("aria",$names2));
-		
-		$series2 = array_slice($series2,0,100);
-		$links = array();
-		foreach ($series2 as $key => $element)
-		{
-			
-			$source = $key;
-			foreach($element as $id => $node)
-			{
-				$dest = $node['id'];
-				$dest = array_search($dest,$names2);
-				//var_dump($dest,1);
-				//$dest = array_search($dest, $name2);
-				if ($dest) $links[] = array(
-						"source" => $source,
-						"target" => $dest,
-						"value" => 1
-						);
-			}
-			
-		}
-		//var_dump($links);
-		
-		
-		/*
-		$nodes = array();
-		foreach ($serieszz as $key => &$element)
-		{
-			$inc  =0;
-			$element = $element['id'];
-			//var_dump("1- " . $element . " " . $tt);
-			foreach ($names1 as $idx => $mot)
-			{
-				$tt = preg_match("/\b".preg_quote($element)."\b/i",$mot);
-				//var_dump($tt);
-				if ($tt) { $inc = $idx+1;  }
-			}
-			//var_dump("2- " . $element . " " . $inc);
-			
-			$gggggg = array(
-					"nodeName" => $element,
-					"group" => $inc
-					);
-			
-			$nodes[] = $gggggg;
-		}
-		//$serieszz = json_encode(array_flip($serieszz));
-		
-		
-		//$series2 = json_encode($ret['graph']['adjacency']);
-		$series2 = $graph['adjacency'];
-		$links = array();
-		//var_dump($series2);
-		foreach ($series2 as $key => $element)
-		{
-			$weight = count($element);
-			// Get source  
-			
-			$sourceElt = array_shift($element);
-			$source = $sourceElt['id'];
-			$source = array_search($source,$serieszz);
-			
-			if ($source) foreach($element as $id => $node)
-			{ 
-				$target = $node['id'];
-				$target = array_search($target,$serieszz);
-				//var_dump($source . " " . $target . " " . $node['id']);
-				if ($target)
-				{
-					$links[] = array(
-						"source" => $source,
-						"target" => $target,
-						"value" => $weight
-					);
-					//$source = $target;
-				}
-			}
-			
-		}*/
-		
-		
-		
-		
-		//var_dump($names2);
-		
-		
-		$nodes = json_encode(($nodes));
-		$links = json_encode(($links));
-		
-		//var_dump(array_keys($ret['graph']));
-		//var_dump($nodes);
-		//var_dump($links);
-		//var_dump($ret['graph']['adjacency']);
 		
 		$params['content'] = '<div id="container" style="min-width: 400px; height: 800px; margin: 0 auto"></div>';
 		//$params['content'] .= "<div>" . print_r($ret['graph'],true) . "</div>";
@@ -1442,6 +1418,7 @@ var w = document.body.clientWidth,
     h = document.body.clientHeight,
     colors = pv.Colors.category20();
 
+       
 var vis = new pv.Panel()
 	.canvas('container')
     .fillStyle("white")
@@ -1450,15 +1427,16 @@ var vis = new pv.Panel()
 
 var force = vis.add(pv.Layout.Force)
     .nodes($nodes)
-    .links($links);
+    .links($links)
+	.springLength(15);
 
 force.link.add(pv.Line);
 
 force.node.add(pv.Dot)
-    .size(function(d) (d.group*3 + 4) * Math.pow(this.scale, -1.5))
-    .fillStyle(function(d) d.fix ? "brown" : colors(d.group))
+    .size(function(d) (d.group*10 +10 ) * Math.pow(this.scale, -0.5))
+    .fillStyle(function(d) d.fix ? "brown" : (d.group ? colors(d.group).alpha(1) : colors(d.group).alpha(0.5)))
     .strokeStyle(function() this.fillStyle().darker())
-    .lineWidth(1)
+    .lineWidth(function(d) 0)
     .title(function(d) d.nodeName + " (" + d.group + ")")
     .event("mousedown", pv.Behavior.drag())
     .event("drag", force);

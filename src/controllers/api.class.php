@@ -253,7 +253,16 @@ class APIController extends IController
 	}
 	
 	
+	static public function putEssayID($user,$task,$essay)
+	{
+		var_dump($_REQUEST);
+	}
 
+	static public function posttEssayID($user,$task,$essay)
+	{
+		var_dump($text);
+	}
+	
 	static public function EssayID($user,$task,$essay)
 	{
 		if (isset($GLOBALS['schema']) || isset($_GET['schema']))
@@ -274,65 +283,6 @@ class APIController extends IController
 		$json['taskid'] = $task;
 		
 		return $json;
-		
-		die();
-
-		/*$file = file_get_contents("data/TMA01_H810_Submit.txt");
-		$order   = array("  ");
-		$replace = ' ';
-
-
-		$newstr = str_replace($order, $replace, $file);
-		$arr = explode("\n",$newstr);
-
-		//var_dump($arr);
-		
-
-
-
-		$emptyRemoved = array_filter($arr);
-
-
-		$myarray = array();
-		$inc = 1; $par = 0;
-		foreach ($emptyRemoved as $item)
-		{
-			$sentences22 = APIController::split_text($item);
-			$sentences = array_filter($sentences22,"openEssayist\odd");
-			//var_dump($sentences22);
-			$myarray22 = array();
-
-			foreach ($sentences as $item22)
-			{
-				$myarray[] = array(
-						'id' => 'snt_' . str_pad((int) $inc,4,"0",STR_PAD_LEFT),
-						'block' => 'par_' . str_pad((int) $par,4,"0",STR_PAD_LEFT),
-						'type' => "paragraph",
-						'sentence' => $item22);
-
-				//$myarray22[] = array(
-				//	'id' => 'par_' . str_pad((int) $inc,4,"0",STR_PAD_LEFT),
-				//'text' => $item22);
-				$inc++;
-			}
-
-
-			//$myarray[] = array(
-			//		'id' => 'par_' . str_pad((int) $inc,4,"0",STR_PAD_LEFT),
-			//		'type' => "paragraph",
-			//		'sentence' => $myarray22);
-			$par++;
-		}
-
-		//var_dump($myarray);
-		$json = (array)json_decode(file_get_contents("data/essay.json"),true);
-
-		$json['user'] = $user;
-		$json['task'] = $task;
-		$json['version'] = $essay;
-		$json['stats'] = array('wordcount' => str_word_count($file));
-		$json['text'] = $myarray;
-		return $json;*/
 	}
 
 

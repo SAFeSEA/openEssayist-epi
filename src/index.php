@@ -18,6 +18,7 @@ include_once "controllers/swagger.class.php";
 include_once 'apiclients/APISpellCheck.class.php';
 include_once 'apiclients/APIEssayAnalyser.class.php';
 include_once "data/constants.class.php";
+include_once "data/essay.class.php";
 
 //require_once "epi/firelogger.php";
 
@@ -59,6 +60,7 @@ include_once "data/constants.class.php";
 \Epi\getRoute()->get('/me/task/([\w-_]+)', array('openEssayist\UserController','ListofEssays'));
 \Epi\getRoute()->get('/me/task/([\w-_]+)/keyword', array('openEssayist\UserController','KeywordHistory'));
 \Epi\getRoute()->get('/me/task/([\w-_]+)/essay/([\w-_]+)', array('openEssayist\UserController','ShowEssay'));
+\Epi\getRoute()->get('/me/task/([\w-_]+)/essay/([\w-_]+)/update', array('openEssayist\UserController','UpdateEssay'));
 \Epi\getRoute()->get('/me/task/([\w-_]+)/essay/([\w-_]+)/dispersion', array('openEssayist\UserController','ShowDispersion'));
 \Epi\getRoute()->get('/me/task/([\w-_]+)/essay/([\w-_]+)/adjacency', array('openEssayist\UserController','ShowGraph'));
 \Epi\getRoute()->get('/me/task/([\w-_]+)/submit', array('openEssayist\UserController','SubmitEssay'));
@@ -74,6 +76,8 @@ include_once "data/constants.class.php";
 \Epi\getApi()->get('/user/(\w+)/task/(\w+).json', array('openEssayist\APIController','TaskID'), \Epi\EpiApi::external);
 \Epi\getApi()->get('/user/(\w+)/task/(\w+)/essay.json', array('openEssayist\APIController','Essays'), \Epi\EpiApi::external);
 \Epi\getApi()->get('/user/(\w+)/task/(\w+)/essay/(\w+).json', array('openEssayist\APIController','EssayID'), \Epi\EpiApi::external);
+\Epi\getApi()->put('/user/(\w+)/task/(\w+)/essay/(\w+).json', array('openEssayist\APIController','putEssayID'), \Epi\EpiApi::external);
+\Epi\getApi()->post('/user/(\w+)/task/(\w+)/essay/(\w+).json', array('openEssayist\APIController','posttEssayID'), \Epi\EpiApi::external);
 \Epi\getApi()->get('/user/(\w+)/task/(\w+)/essay/(\w+)/stats.json', array('openEssayist\APIController','Debug'), \Epi\EpiApi::external);
 \Epi\getApi()->get('/user/(\w+)/task/(\w+)/essay/(\w+)/feedback.json', array('openEssayist\APIController','EssayFeedback'), \Epi\EpiApi::external);
 
@@ -81,6 +85,7 @@ include_once "data/constants.class.php";
 \Epi\getRoute()->get('.*', 'openEssayist\error404');
 
 \Epi\getRoute()->run();
+
 
 /**
  * Handler for unknown URLs
