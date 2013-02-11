@@ -75,9 +75,12 @@ include_once "data/essay.class.php";
 \Epi\getApi()->get('/user/(\w+)/task.json', array('openEssayist\APIController','Tasks'), \Epi\EpiApi::external);
 \Epi\getApi()->get('/user/(\w+)/task/(\w+).json', array('openEssayist\APIController','TaskID'), \Epi\EpiApi::external);
 \Epi\getApi()->get('/user/(\w+)/task/(\w+)/essay.json', array('openEssayist\APIController','Essays'), \Epi\EpiApi::external);
-\Epi\getApi()->get('/user/(\w+)/task/(\w+)/essay/(\w+).json', array('openEssayist\APIController','EssayID'), \Epi\EpiApi::external);
+
+\Epi\getApi()->get('/user/(\w+)/task/(\w+)/essay/(\w+).json', array('openEssayist\APIController','getEssayID'), \Epi\EpiApi::external);
 \Epi\getApi()->put('/user/(\w+)/task/(\w+)/essay/(\w+).json', array('openEssayist\APIController','putEssayID'), \Epi\EpiApi::external);
-\Epi\getApi()->post('/user/(\w+)/task/(\w+)/essay/(\w+).json', array('openEssayist\APIController','posttEssayID'), \Epi\EpiApi::external);
+\Epi\getApi()->post('/user/(\w+)/task/(\w+)/essay/(\w+).json', array('openEssayist\APIController','postEssayID'), \Epi\EpiApi::external);
+\Epi\getApi()->delete('/user/(\w+)/task/(\w+)/essay/(\w+).json', array('openEssayist\APIController','deleteEssayID'), \Epi\EpiApi::external);
+
 \Epi\getApi()->get('/user/(\w+)/task/(\w+)/essay/(\w+)/stats.json', array('openEssayist\APIController','Debug'), \Epi\EpiApi::external);
 \Epi\getApi()->get('/user/(\w+)/task/(\w+)/essay/(\w+)/feedback.json', array('openEssayist\APIController','EssayFeedback'), \Epi\EpiApi::external);
 

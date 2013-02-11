@@ -328,7 +328,7 @@ foreach ($parasenttok as $paragraph) {
 		</div>
 	
 		<div class="span3"   style="">
-			<div class="widget-header"><h3>Categorie 1</h3>
+			<div class="widget-header"><h3 contenteditable="true">Categorie 1</h3>
 				<div class="box-icon">
 					<a class="btn-setting" href="#"><i class="icon-wrench"></i></a>
 					<a class="btn-close" href="#"><i class="icon-remove"></i></a>
@@ -370,6 +370,20 @@ foreach ($parasenttok as $paragraph) {
 
 </div>
 
+</div>
+
+<div class="modal hide fade" id="myModal">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">x</button>
+				<h3>Settings</h3>
+			</div>
+			<div class="modal-body">
+				<p>Here settings can be configured...</p>
+			</div>
+			<div class="modal-footer">
+				<a href="#" class="btn" data-dismiss="modal">Close</a>
+				<a href="#" class="btn btn-primary">Save changes</a>
+			</div>
 </div>
 
 <?php

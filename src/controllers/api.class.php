@@ -255,16 +255,50 @@ class APIController extends IController
 	
 	static public function putEssayID($user,$task,$essay)
 	{
-		var_dump($_REQUEST);
+		parse_str(file_get_contents("php://input"),$post_vars);
+		$method = $_SERVER['REQUEST_METHOD'];
+		
+		$json['invoke'] = "PUT";
+		$json['method'] = $method;
+		$json['request'] = $_REQUEST;
+		$json['params'] = $post_vars;
+		$json['get'] = $_GET;
+		$json['post'] = $_POST;
+		return $json;
 	}
 
-	static public function posttEssayID($user,$task,$essay)
+	static public function deleteEssayID($user,$task,$essay)
 	{
-		var_dump($text);
+		parse_str(file_get_contents("php://input"),$post_vars);
+		$method = $_SERVER['REQUEST_METHOD'];
+		
+		$json['invoke'] = "DELETE";
+		$json['method'] = $method;
+		$json['request'] = $_REQUEST;
+		$json['params'] = $post_vars;
+		$json['get'] = $_GET;
+		$json['post'] = $_POST;
+		return $json;
 	}
 	
-	static public function EssayID($user,$task,$essay)
+	static public function postEssayID($user,$task,$essay)
 	{
+		parse_str(file_get_contents("php://input"),$post_vars);
+		$method = $_SERVER['REQUEST_METHOD'];
+		
+		$json['invoke'] = "POST";
+		$json['method'] = $method;
+		$json['request'] = $_REQUEST;
+		$json['params'] = $post_vars;
+		$json['get'] = $_GET;
+		$json['post'] = $_POST;
+		return $json;
+	}
+	
+	static public function getEssayID($user,$task,$essay)
+	{
+
+		
 		if (isset($GLOBALS['schema']) || isset($_GET['schema']))
 		{
 			$json = (array)json_decode(file_get_contents("data/schema-essay.json"),true);

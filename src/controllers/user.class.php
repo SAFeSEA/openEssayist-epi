@@ -389,6 +389,11 @@ EOF;
 	<script>
         			
 		$(function() {
+        	$('.btn-setting').click(function(e){
+				e.preventDefault();
+				$('#myModal').modal('show');
+			}); 		
+        			
         	$('.inlinebar').sparkline('html', {
         			type: 'bar', 
         			chartRangeMin: 0, 

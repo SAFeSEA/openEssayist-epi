@@ -30,36 +30,95 @@ class AdminController extends IController
 	{
 		$config = \Epi\getConfig()->get();
 		$temp_oa_dir = self::getTempDir($task);
-		
+
 		// Call the various services
 		$client = new APIEssayAnalyser();
 		$ret1 = $client->getStats("test server");
 		$config->pyAnalyser->server = $client->getCalledURL();
 		$config->pyAnalyser->message = $ret1;
-		
 
+
+		
 		$client2 = new APISpellCheck();
 		$ret2 = $client2->getStats("test server");
 		$config->afterthedeadline->message = $ret2;
 		$config->afterthedeadline->server = $client2->getCalledURL();
 		//$ret = self::TestServices();
 		//var_dump($ret);
+
+		$task = "versions";
+		$essay = "0001";
+		$apurl = '/user/UID/task/' . $task . '/essay/' . $essay . '.json';
+		$params = array('param1' => "test", 'param2' => "test2");
+
+		$apiGET = \Epi\getApi()->invoke($apurl,\Epi\EpiRoute::httpGet,array('_GET' => $params));
+		var_dump($apiGET);
+		$apiGET = \Epi\getApi()->invoke($apurl,\Epi\EpiRoute::httpPost,array('_GET' => $params));
+		var_dump($apiGET);
 		$output = \Epi\getTemplate()->get('admin-panel.widget.php', array(
 				'config' => $config,
-				'tempdir' => 	$temp_oa_dir	
-				));
+				'tempdir' => 	$temp_oa_dir
+		));
 		
 		$params = array();
 		$params['heading'] = 'Administration';
 		$params['content'] = $output;
 
 		$params['injectJS'] = <<<EOF
+<script src="/bootstrap/jquery-ui-1.9.2.custom/js/jquery-ui-1.9.2.custom.min.js"></script>
+<script src="/bootstrap/jquery.blockUI.js"></script>
 <script>
+$(document).ready(function() {
+	$.blockUI.defaults.message = '<h1>Data collected...</h1>';
+	
+	function testAPI(vUrl,vMethod,vData)
+	{
+		return $.ajax({
+			url: vUrl,
+    		cache: false,
+    		type: vMethod,
+   			data: vData,
+    		beforeSend: function () {
+		        // doing something in UI
+    		},
+    		complete: function () {
+		        // doing something in UI
+    		},
+    		success: function (data) {
+		        // doing something in UI
+    		},
+    		error: function () {
+		        // doing something in UI
+    		}
+		});
+	}
+	
+	var params =  { param1: "test", param2 : "test2" };
+	
+	$(document).ajaxStart($.blockUI).ajaxStop($.unblockUI);
+	$("#b1").click(function() {
+		testAPI("$apurl","GET",params);
+	});
+			
+	$("#b2").click(function() {
+		testAPI("$apurl","POST",params);
+	});
+
+	$("#b3").click(function() {
+		testAPI("$apurl","PUT",params);
+	});
+				
+	$("#b4").click(function() {
+		testAPI("$apurl","DELETE",params);
+	});
+				
+});
+
 </script>
 EOF;
 
 		IController::showTemplate('openEssayist-template.php', $params);
-		
+
 	}
 
 
