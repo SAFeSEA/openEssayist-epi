@@ -328,6 +328,7 @@ class UserController extends IController {
 
 		self::debug('$apiTask => ' . print_r(array_keys($apiTask), true));
 
+		
 		// Get a list of ranked sentence indexes
 		$ggg = array();
 		foreach ($ret['ranked'] as $ranking) {
@@ -335,14 +336,18 @@ class UserController extends IController {
 			$ggg[] = $ranking[1];
 		}
 		$ret['ranking'] = $ggg;
-
+		
+		
+		
+		
 		// Get a list of structure identifiers
 		$hhh = array();
 		foreach ($ret['struct'] as $ranking) {
 			$hhh[$ranking[0]] = $ranking[1];
 		}
 		$ret['struct'] = $hhh;
-
+		self::debug('$apiTask => ' . print_r($hhh, true));
+		
 		// Get the list of bigrams
 		$kk = $ret['bigrams'];
 
@@ -418,11 +423,16 @@ EOF;
 		});
         			
 		function checkStructure(checkbox) {
-			var classname = "span.oe-snt[data-struct='" + checkbox.value + "']" ;
-			if (checkbox.checked)
-				$(classname).show()
-			else
-				$(classname).hide("slow");
+        	var indicators = checkbox.value.split(";");
+        	indicators.forEach(function(elt,idx,arr) {
+				var classname = "span.oe-snt[data-struct='" + elt + "']" ;
+				if (checkbox.checked)
+					$(classname).show()
+				else
+					$(classname).hide("slow");
+        			
+        			});
+        			
         		
 		}
         			
@@ -1216,16 +1226,40 @@ EOF;
 		$params['heading'] = 'openEssayist';
 		$params['breadcrumb'] = $ff;
 
-		$params['content'] = '<div id="container" style="min-width: 400px; height: 400px; margin: 0 auto"></div>';
+		$params['content'] = <<<EOF
+<div id="resizer" style="min-width: 350px; min-height: 200px">
+    <div id="inner-resizer">
+    <div id="container" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
+    </div>
+    </div>
+EOF;
 
 
 
 
 		$params['injectJS'] = <<<EOF
 <script src="/bootstrap/highcharts/js/highcharts.js"></script>
+<script src="/bootstrap/jquery-ui-1.9.2.custom/js/jquery-ui-1.9.2.custom.min.js"></script>
 <script>
 
 $(function () {
+
+$('#resizer').resizable({
+	ghost: true,
+    // On resize, set the chart size to that of the 
+    // resizer minus padding. If your chart has a lot of data or other
+    // content, the redrawing might be slow. In that case, we recommend 
+    // that you use the 'stop' event instead of 'resize'.
+    stop: function() {
+        chart.setSize(
+            this.offsetWidth - 20, 
+            this.offsetHeight - 20,
+            false
+        );
+    }
+});
+
+
 
 var chart;
 
@@ -1410,14 +1444,22 @@ EOF;
 		$params['breadcrumb'] = $ff;
 		
 		
-		$params['content'] = '<div id="container" style="min-width: 400px; height: 800px; margin: 0 auto"></div>';
+		$params['content'] = <<<EOF
+<div id="resizer" style="min-width: 350px; min-height: 200px">
+    <div id="inner-resizer">
+				<div id="container" style="min-width: 400px; height: 800px; margin: 0 auto"></div>
+	</div></div>
+EOF;
 		//$params['content'] .= "<div>" . print_r($ret['graph'],true) . "</div>";
 		
 		$params['injectJS'] = <<<EOF
-<script src="/bootstrap/protovis.js"></script>		
+<script src="/bootstrap/protovis.js"></script>
+<script src="/bootstrap/jquery-ui-1.9.2.custom/js/jquery-ui-1.9.2.custom.min.js"></script>
 <script type="text/javascript" src="/bootstrap/miserables.js"></script>				
 
 <script type="text/javascript+protovis">
+
+
 
 var w = document.body.clientWidth,
     h = document.body.clientHeight,

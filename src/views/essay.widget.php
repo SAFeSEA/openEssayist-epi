@@ -73,6 +73,10 @@
 							<div class="controls controls-row">
 								<div class="controls">
 									<label class="checkbox"> 
+										<input  type="checkbox" value="#-s:h#;#-s:t#" id="cStructure1" onchange="checkStructure(this)" checked="checked"> 
+										Headings
+									</label>
+									<label class="checkbox"> 
 										<input  type="checkbox" value="#+s:i#" id="cStructure1" onchange="checkStructure(this)" checked="checked"> 
 										Introduction
 									</label>
