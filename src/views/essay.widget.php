@@ -309,6 +309,9 @@ foreach ($parasenttok as $paragraph) {
 					
 		<div class="widget-content">
 		
+		
+		<div class="row-fluid">
+		
 		<div class="span3 " style="">
 			<div class="widget-header"><h3>All</h3></div>
 			
@@ -316,7 +319,8 @@ foreach ($parasenttok as $paragraph) {
 			<ul id="sortable0" class="droptrue connectedSortable">
 		
 			<?php 
-			foreach (array_slice($bigrams,0,10) as $key => $item)
+			$tt = array_merge($trigrams,$bigrams);
+			foreach (array_slice($tt,0,30) as $key => $item)
 			{
 				$ft = "".join(" ",$item['ngram']);
 				$count = $item['count'];
@@ -330,9 +334,13 @@ foreach ($parasenttok as $paragraph) {
 		
 			</ul></div>
 		</div>
+		
+		<div class="span9" style="">
 	
-		<div class="span3"   style="">
-			<div class="widget-header"><h3 contenteditable="true">Categorie 1</h3>
+		<div class="row-fluid">
+		
+		<div class="span4"   style="">
+			<div class="widget-header"><h3 contenteditable="true">Category 1</h3>
 				<div class="box-icon">
 					<a class="btn-setting" href="#"><i class="icon-wrench"></i></a>
 					<a class="btn-close" href="#"><i class="icon-remove"></i></a>
@@ -342,8 +350,9 @@ foreach ($parasenttok as $paragraph) {
 			</ul></div>
 		</div>
 
-		<div class="span3"   style="">
-			<div class="widget-header"><h3>Categorie 2</h3>
+		
+		<div class="span4"   style="">
+			<div class="widget-header"><h3>Category 2</h3>
 				<div class="box-icon">
 					<a class="btn-setting" href="#"><i class="icon-wrench"></i></a>
 					<a class="btn-close" href="#"><i class="icon-remove"></i></a>
@@ -353,8 +362,8 @@ foreach ($parasenttok as $paragraph) {
 			</ul></div>
 		</div>
 		
-		<div class="span3"   style="">
-			<div class="widget-header"><h3>Categorie 3</h3>
+		<div class="span4"   style="">
+			<div class="widget-header"><h3>Category 3</h3>
 				<div class="box-icon">
 					<a class="btn-setting" href="#"><i class="icon-wrench"></i></a>
 					<a class="btn-close" href="#"><i class="icon-remove"></i></a>
@@ -363,6 +372,65 @@ foreach ($parasenttok as $paragraph) {
 			<div class="widget-content"><ul id="sortable3" class="droptrue connectedSortable">
 			</ul></div>
 		</div>
+
+
+		
+		</div>
+		
+
+<div class="row-fluid">
+
+	<div class="span4" style="">
+		<div class="widget-header">
+			<h3 contenteditable="true">Category 4</h3>
+			<div class="box-icon">
+				<a class="btn-setting" href="#"><i class="icon-wrench"></i></a> <a
+					class="btn-close" href="#"><i class="icon-remove"></i></a>
+			</div>
+		</div>
+		<div class="widget-content">
+			<ul id="sortable1" class="droptrue connectedSortable">
+			</ul>
+		</div>
+	</div>
+
+
+	<div class="span4" style="">
+		<div class="widget-header">
+			<h3>Category 5</h3>
+			<div class="box-icon">
+				<a class="btn-setting" href="#"><i class="icon-wrench"></i></a> <a
+					class="btn-close" href="#"><i class="icon-remove"></i></a>
+			</div>
+		</div>
+		<div class="widget-content">
+			<ul id="sortable2" class="droptrue connectedSortable">
+			</ul>
+		</div>
+	</div>
+
+	<div class="span4" style="">
+		<div class="widget-header">
+			<h3>Category 6</h3>
+			<div class="box-icon">
+				<a class="btn-setting" href="#"><i class="icon-wrench"></i></a> <a
+					class="btn-close" href="#"><i class="icon-remove"></i></a>
+			</div>
+		</div>
+		<div class="widget-content">
+			<ul id="sortable3" class="droptrue connectedSortable">
+			</ul>
+		</div>
+	</div>
+
+
+
+</div>		
+		
+		</div>
+		
+		</div>
+		
 
 		</div> <!-- /widget-content -->
 				

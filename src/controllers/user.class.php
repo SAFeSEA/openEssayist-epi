@@ -719,6 +719,7 @@ EOF;
 		$labels = array();
 		foreach ($apiTask['essays'] as $index => $item) {
 
+			if ($index == count($apiTask['essays'])-1) continue	;
 			$serie = array();
 			$count[$index] = array();
 			$apurl = '/user/UID/task/' . $task . '/essay/' . $item['ref'] . '.json';
@@ -727,7 +728,7 @@ EOF;
 			//var_dump($apiEssay['stats']);
 			//$apiTask['essays'][$inc]['stats'] = $apiEssay['stats'];
 			//$apiTask['essays'][$inc]['metrics'] = $apiEssay['metric'];
-			$apiTass = array_slice($apiEssay['bigrams'], 0, 5);
+			$apiTass = array_slice($apiEssay['bigrams'], 0, 150);
 
 			//var_dump($index);
 			foreach ($apiTass as $id => $kstruct) {
@@ -842,7 +843,8 @@ EOF;
 				    <div class="btn-group" data-toggle="buttons-radio">
 					    <button id="b3" type="button" data-chart="column" class="btn btn-primary active">Bar</button>
 					    <button id="b3" type="button" data-chart="area" class="btn btn-primary">Area</button>
-				    </div>
+					    <button id="b3" type="button" data-chart="bar" class="btn btn-primary">Column</button>
+					    </div>
 				 	<button id="b1" type="button" class="btn active" data-toggle="button">Stack</button>
 				    <button id="b2" type="button" class="btn"> Swap keywords/essay </button>
 				</div> <!-- /widget-content -->
@@ -1179,6 +1181,16 @@ EOF;
 		$first = str_word_count($comma_separated);
 		$comma_separated = implode(" ", array_slice($lll,0,$lasta+1));
 		$last = str_word_count($comma_separated);
+
+		$deb = $hhh['#+s:c#'];
+		$firsta = array_shift($deb);
+		$lasta = array_pop($deb);
+		//var_dump($firsta . " " . $lasta);
+		$comma_separated = implode(" ", array_slice($lll,0,$firsta-1));
+		$firsta = str_word_count($comma_separated);
+		$comma_separated = implode(" ", array_slice($lll,0,$lasta+1));
+		$lasta = str_word_count($comma_separated);
+		
 		//var_dump($first . " " . $last);
 		//$deb2 = $hhh['#+s:c#'];
 		//$first2 = array_shift($deb2);
@@ -1293,7 +1305,18 @@ $(document).ready(function() {
                             color: '#606060'
                         }
                     }
-                }]
+                },{ // Light air
+                    from: $firsta,
+                    to: $lasta,
+                    color: 'rgba(68, 170, 213, 0.1)',
+                    label: {
+                        text: 'Conclusion',
+                        style: {
+                            color: '#606060'
+                        }
+                    }
+                }
+                ]
 	},
 	yAxis: {
 		title: {
