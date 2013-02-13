@@ -322,6 +322,8 @@ class UserController extends IController {
 		//var_dump($_SERVER);
 
 		// Retrieve the essay data
+		$userurl = '/me/task/' . $task . '/savedata';
+		
 		$apurl = '/user/UID/task/' . $task . '/essay/' . $essay . '.json';
 		$apiTask = \Epi\getApi()->invoke($apurl);
 		$ret = $apiTask;
@@ -383,7 +385,8 @@ class UserController extends IController {
 EOF;
 
 		$params['injectJS'] = <<<EOF
-		<script src="/bootstrap/jquery-ui-1.9.2.custom/js/jquery-ui-1.9.2.custom.min.js"></script>
+		
+		<script src="/bootstrap/jquery.blockUI.js"></script>
 		<script src="/bootstrap/highlight.pack.js"></script>
 		<script src="/bootstrap/jquery.sparkline.js"></script>
 		<!--<script src="/bootstrap/jquery.peity.min.js"></script>-->
@@ -392,134 +395,189 @@ EOF;
         </script>
 		<script src="/bootstrap/highlight.openessayist.js"></script>
 	<script>
-        			
-		$(function() {
-        	$('.btn-setting').click(function(e){
-				e.preventDefault();
-				$('#myModal').modal('show');
-			}); 		
-        			
-        	$('.inlinebar').sparkline('html', {
-        			type: 'bar', 
-        			chartRangeMin: 0, 
-        			chartRangeMax: .25 , 
-        			tooltipPrefix: '',
-        			tooltipSuffix: '', 
-        			disableHiddenCheck: true, 
-        			height: '18px', 
-        			width: '100px', 
-        			barColor: 'red', 
-        			numberDigitGroupCount: 5,
-        			colorMap: {
-        				'.25:1': 'green',
-        				'.1:.2499999': 'red',
-        				'0:.0999999': 'lightblue'
-					}
-				});
-			//$('.inlinebar').peity("bar");        			
-        	//$('.inlinesparkline').sparkline(); 
-        	//$('.sparklines').sparkline();         			
-        	//$('.sparkbullet').sparkline('html', {type: 'bullet', disableHiddenCheck: true, height: '18px', width: '20px',performanceColor: '#8484f4'});         			
+function mashup_content() {
+
+	// initialise the code highlighting
+	$('div.myessay').each(function(i, e) {
+		hljs.highlightBlock(e)
+	});
+
+	// define the sparkline for the keyword's ranking
+	$('.inlinebar').sparkline('html', {
+		type : 'bar',
+		chartRangeMin : 0,
+		chartRangeMax : .25,
+		tooltipPrefix : '',
+		tooltipSuffix : '',
+		disableHiddenCheck : true,
+		height : '18px',
+		width : '100px',
+		barColor : 'red',
+		numberDigitGroupCount : 5,
+		colorMap : {
+			'.25:1' : 'green',
+			'.1:.2499999' : 'red',
+			'0:.0999999' : 'lightblue'
+		}
+	});
+	
+	// $('.inlinebar').peity("bar");
+	// $('.inlinesparkline').sparkline();
+	// $('.sparklines').sparkline();
+	// $('.sparkbullet').sparkline('html', {type: 'bullet', disableHiddenCheck:
+	// true, height: '18px', width: '20px',performanceColor: '#8484f4'});
+
+
+};
+
+// show/hide strcture element of document (based on code in data-struct)
+function checkStructure(checkbox) {
+	var indicators = checkbox.value.split(";");
+	indicators.forEach(function(elt, idx, arr) {
+		var classname = "span.oe-snt[data-struct='" + elt + "']";
+		if (checkbox.checked)
+			$(classname).show();
+		else
+			$(classname).hide("slow");
+
+	});
+
+}
+
+
+// show/hide keywords by category
+function checkAddress(checkbox) {
+	var classname = 'span.class' + checkbox.value;
+	if (checkbox.checked)
+		$(classname).removeClass('class0');
+	else
+		$(classname).addClass('class0');
+}
+
+// blur in/out all text except elements of feedback
+function checkBlur(checkbox) {
+	var classname = 'span.oe-snt';
+	if (checkbox.checked) {
+		$(classname).addClass('oe-blur');
+	} else {
+		$(classname).removeClass('oe-blur');
+	}
+
+}
+
+function keywords_order_content() {
+	//	initialise the blockUI widget on AJAX calls
+	$(document).ajaxStart($.blockUI).ajaxStop($.unblockUI);
+
+	// set the dropable widgets
+	$(".droptrue").sortable({
+		connectWith : ".connectedSortable",
+		placeholder : "ui-state-highlight",
+		update : function(event, ui) {
+			var order = $(this).sortable('toArray').toString();
+			console.log(this.id + " " + order);
+		}
+	});
+
+	$(".dropfalse").sortable({
+		connectWith : ".connectedSortable",
+		placeholder : "ui-state-highlight",
+		dropOnEmpty : false
+
+	});
+	$("#sortable0, #sortable1, #sortable2, #sortable3").disableSelection();
+	
+	//
+	$("#catg-Save").click(function(e) {
+		$(".droptrue").each(function(index, elt) {
+			var gg = $(this).sortable('toArray');
+			console.log(gg);
 		});
-        			
-		function checkStructure(checkbox) {
-        	var indicators = checkbox.value.split(";");
-        	indicators.forEach(function(elt,idx,arr) {
-				var classname = "span.oe-snt[data-struct='" + elt + "']" ;
-				if (checkbox.checked)
-					$(classname).show()
-				else
-					$(classname).hide("slow");
-        			
-        			});
-        			
-        		
-		}
-        			
-		function checkAddress(checkbox) {
-			var classname = 'span.class' + checkbox.value;
-			if (checkbox.checked)
-				$(classname).removeClass('class0');
-			else
-				$(classname).addClass('class0');
-		}
+		$.blockUI.defaults.message = '<h3>Save user data ... </h3>';
+		var params = {
+			'test' : [ 1, 2, 3 ]
+		};
 
-		function checkBlur(checkbox) {
-			var classname = 'span.oe-snt';
-			if (checkbox.checked)
-				{
-				$(classname).addClass('oe-blur');
-				//$(classname).attr('data-text',$(classname).text());
-				//$(classname).text('xxxxxxx');
-				}
-			else
-				{
-								
-				$(classname).removeClass('oe-blur');
-				//$(classname).text($(classname).attr('data-text'));
-				}
-		
-		}
+		$.ajax({
+			type : "POST",
+			url : "$userurl", // URL and function to call
+			data : {
+				'params' : params
+			}, // Set Method Params
+			contentType : "application/json; charset=utf-8",
+			dataType : "json",
+			success : function(msg, status) {
+				// Set Response outcome
+				console.log(msg.d);
+			},
+			error : function(xhr, msg, e) {
+				// this should only fire if the ajax call did not happen or
+				// there was an unhandled exception
+				console.log(msg);
+			}
+		});
 
-		$(document).ready(function() {
-			$('div.myessay').each(function(i, e) {
-				hljs.highlightBlock(e)
+	});
+}
+
+$(mashup_content);
+$(keywords_order_content);
+
+
+
+
+
+$(function() {
+
+
+	//		
+	$('.btn-setting').click(function(e) {
+		e.preventDefault();
+		$('#myModal').modal('show');
+	});
+
+
+
+
+
+
+
+	$('#mytabs a:first').tab('show');
+	$('#mytabs a').click(function(e) {
+		e.preventDefault();
+		$(this).tab('show');
+	})
+	$("#slider-range").slider({
+		range : true,
+		min : 0,
+		max : 15,
+		values : [ 0, 1 ],
+		slide : function(event, ui) {
+			$("#amount").text(ui.values[0] + " - " + ui.values[1]);
+
+			$('span.oe-snt-rank').each(function() {
+				var tt = parseInt($(this).attr('data-snt-rank'));
+				var mina = ui.values[0];
+				var maxa = ui.values[1];
+
+				$(this).removeClass('show');
+				$(this).removeClass('dimshow');
+				if (mina <= tt && tt <= maxa) {
+					// if (tt == maxa)
+					$(this).addClass('show');
+					// else
+					// $(this).addClass('dimshow');
+
+				}
 			});
-        			
-        			
-		$( ".droptrue" ).sortable({
-			connectWith: ".connectedSortable",
-        	placeholder: "ui-state-highlight",
-        	update: function(event, ui) {
-				var order = $(this).sortable('toArray').toString();
-				console.log(this.id + " " + order);
-			}			
-		});
-$( ".dropfalse" ).sortable({
-connectWith: ".connectedSortable",
-        			placeholder: "ui-state-highlight",
-dropOnEmpty: false
+
+		}
+	});
+	$("#amount").text(
+			$("#slider-range").slider("values", 0) + " - "
+					+ $("#slider-range").slider("values", 1));
+
 });
-$( "#sortable0, #sortable1, #sortable2, #sortable3" ).disableSelection();
-
-        			
-        			
-			$('#mytabs a:first').tab('show');
-			$('#mytabs a').click(function(e) {
-    e.preventDefault();
-    $(this).tab('show');
-})
-			$( "#slider-range" ).slider({
-	            range: true,
-	            min: 0,
-	            max: 15,
-	            values: [ 0, 1 ],
-	            slide: function( event, ui ) {
-	                $( "#amount" ).text( ui.values[ 0 ] + " - " + ui.values[ 1 ] );
-	                
-	                $('span.oe-snt-rank').each(function(){
-		               	var tt =  parseInt($(this).attr('data-snt-rank'));
-		               	var mina = ui.values[ 0 ];
-		               	var maxa = ui.values[ 1 ];
-		               	
-		               	$(this).removeClass('show');
-		               	$(this).removeClass('dimshow');
-		                if (mina <= tt && tt <= maxa)
-		                	{
-		                		//if (tt == maxa)
-		                			$(this).addClass('show');
-		                		//else
-		                		//	$(this).addClass('dimshow');
-		                		
-		                	}
-		                	                });
-	                
-	            }
-	        });
-	        $( "#amount" ).text(  $( "#slider-range" ).slider( "values", 0 ) +
-	            " - " + $( "#slider-range" ).slider( "values", 1 ) );
-
-		});
 	</script>	
 	<script src="/bootstrap/jquery-tour/jquery.tour.js"></script>        			
 	<script>
@@ -1251,7 +1309,6 @@ EOF;
 
 		$params['injectJS'] = <<<EOF
 <script src="/bootstrap/highcharts/js/highcharts.js"></script>
-<script src="/bootstrap/jquery-ui-1.9.2.custom/js/jquery-ui-1.9.2.custom.min.js"></script>
 <script>
 
 $(function () {
@@ -1477,7 +1534,6 @@ EOF;
 		
 		$params['injectJS'] = <<<EOF
 <script src="/bootstrap/protovis.js"></script>
-<script src="/bootstrap/jquery-ui-1.9.2.custom/js/jquery-ui-1.9.2.custom.min.js"></script>
 <script type="text/javascript" src="/bootstrap/miserables.js"></script>				
 
 <script type="text/javascript+protovis">
@@ -1516,6 +1572,22 @@ vis.render();
     </script>					
 EOF;
 		IController::showTemplate('openEssayist-template.php', $params);
+	}
+	
+	
+	
+	static public function SaveUserData($task)
+	{
+		parse_str(file_get_contents("php://input"),$post_vars);
+		$method = $_SERVER['REQUEST_METHOD'];
+		$json['invoke'] = "POST";
+		$json['method'] = $method;
+		$json['request'] = $_REQUEST;
+		$json['params'] = $post_vars;
+		$json['get'] = $_GET;
+		$json['post'] = $_POST;
+		return $json;
+				
 	}
 
 }

@@ -1151,6 +1151,16 @@ img.brand-ico
     line-height: 24px;
     position: relative;
 }
+
+.widget-toolbar {
+    background: -moz-linear-gradient(center top , #FAFAFA 0%, #E9E9E9 100%) repeat scroll 0 0 transparent;
+    border: 1px solid #D5D5D5;
+    border-radius: 0px;
+	margin-top: -1px;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
 .widget-header h3 {
 	margin-top: 2px;
 	margin-bottom: 2px;
@@ -1180,7 +1190,7 @@ color: #555555;
     /*padding: 20px 15px 15px;*/
     padding: 10px;
 }
-.widget-header + .widget-content {
+.widget-header + .widget-content, .widget-toolbar + .widget-content {
     border-top: medium none;
     border-top-left-radius: 0;
     border-top-right-radius: 0;
@@ -1229,6 +1239,27 @@ color: #555555;
     background: none repeat scroll 0 0 #FFFFFF;
 }
 
+
+.widget-content-allcat
+{
+	
+}
+
+.widget-content-cats
+{
+	
+}
+
+.widget-content-cats .row-fluid
+{
+	padding-top: 10px; 
+}
+
+.widget-content-cats .row-fluid:FIRST-CHILD
+{
+	padding-top: 0px; 
+	
+}
 
 
 .shortcuts {

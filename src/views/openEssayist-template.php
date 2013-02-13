@@ -197,6 +197,7 @@
 	<!-- Placed at the end of the document so the pages load faster -->
 	<script
 		src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+	<script src="/bootstrap/jquery-ui-1.9.2.custom/js/jquery-ui-1.9.2.custom.min.js"></script>
 	<script src="/bootstrap/js/bootstrap.js"></script>
 	<script src="/bootstrap/openEssayist.js"></script>
 	<?php echo $injectJS; ?>

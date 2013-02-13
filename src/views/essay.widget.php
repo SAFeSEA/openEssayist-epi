@@ -305,14 +305,27 @@ foreach ($parasenttok as $paragraph) {
 		<div class="widget-header">
 			<i class="icon-list-alt"></i>
 				<h3>Keywords</h3>
+				
+						
+				
 		</div> <!-- /widget-header -->
-					
+			<div class="widget-toolbar">
+			<div class="btn-toolbar">    
+				<div class="btn-group">
+    				<button id="catg-Save" class="btn btn-mini btn-primary">Save</button>
+    				<button id="catg-Reset" class="btn btn-mini disabled">Reset</button>
+    				</div>
+    			<div class="btn-group">
+    				<button id="catg-New" class="btn btn-mini disabled">New Category...</button>
+    			</div>
+    		</div>
+			
+		</div>
 		<div class="widget-content">
-		
 		
 		<div class="row-fluid">
 		
-		<div class="span3 " style="">
+		<div class="span3 widget-content-allcat">
 			<div class="widget-header"><h3>All</h3></div>
 			
 			<div class="widget-content">
@@ -320,7 +333,7 @@ foreach ($parasenttok as $paragraph) {
 		
 			<?php 
 			$tt = array_merge($trigrams,$bigrams);
-			foreach (array_slice($tt,0,30) as $key => $item)
+			foreach (array_slice($tt,0,130) as $key => $item)
 			{
 				$ft = "".join(" ",$item['ngram']);
 				$count = $item['count'];
@@ -335,7 +348,7 @@ foreach ($parasenttok as $paragraph) {
 			</ul></div>
 		</div>
 		
-		<div class="span9" style="">
+		<div class="span9 widget-content-cats" style="">
 	
 		<div class="row-fluid">
 		
