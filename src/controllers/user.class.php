@@ -369,7 +369,7 @@ class UserController extends IController {
 		$userget = '/me/userdata';
 		$usermodel = \Epi\getApi()->invoke($userget);
 
-		$thisuser = $usermodel[$task][$essay]['keywords'] ?: array();
+		$thisuser = $usermodel['user'][$task][$essay]['keywords'] ?: array();
 		
 		if (count($thisuser)==0)
 		{
@@ -531,7 +531,14 @@ function keywords_order_content() {
 			type : "POST",
 			method: "post",
 			url : "$userurl", // URL and function to call
-			data : { "data" : {"$task": {"$essay" : {"keywords" : result }}}}, 
+			data : {	
+				"params" : {
+					"user": "user",
+					"task" : "$task", 
+					"essay": "$essay",
+					"data" : {"keywords" : result }
+					}
+			}, 
 			//contentType : "application/json; charset=utf-8",
 			//processData : true,
 			dataType : "json",
@@ -1608,24 +1615,33 @@ EOF;
 	 * 
 	 * @param string $task
 	 * @return string
-	 * @todo	Need to overwrite existing data, updating the model
+	 * @todo	Detect location (user/task/essay) of data
 	 */
 	static public function setUserData()
 	{
-		$data = $_POST['data'] ? : array();
+		$data = $_POST['params'] ? : array();
 
+		$user=  $data['user'];
+		$task=  $data['task'];
+		$essay= $data['essay'];
+		
+		// Get current model
+		$old = self::getUserData();
+		$new = $old;
+
+		// add/replace new set of data into model
+		$new[$user][$task][$essay] = $data['data'];
+
+		// save to file
 		$temp_oa_dir = self::getTempDir();
 		$file = $temp_oa_dir . DIRECTORY_SEPARATOR . "usermodel.txt";
-		$content = json_encode($data);
+		$content = json_encode($new);
 		file_put_contents($file, $content);
 		
-		
-		$json = (array)json_decode(file_get_contents($file),true);
-		
-		
-		
-		//$json['file'] = $file;
-		return $json;
+		//$json['data'] = $data;
+		//$json['old'] = $old;
+		//$json['new'] = $new;
+		return $data['data'];
 				
 	}
 	
@@ -1634,7 +1650,10 @@ EOF;
 		//var_dump($_GET);
 		$temp_oa_dir = self::getTempDir();
 		$file = $temp_oa_dir . DIRECTORY_SEPARATOR . "usermodel.txt";
-		$json = (array)json_decode(file_get_contents($file),true);
+		$content = @file_get_contents($file);
+		$json = array();
+		if ($content !== FALSE)
+			$json = (array)json_decode($content,true);
 		return $json;
 	}
 
