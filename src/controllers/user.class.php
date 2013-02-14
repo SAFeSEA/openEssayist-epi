@@ -322,13 +322,13 @@ class UserController extends IController {
 		//var_dump($_SERVER);
 
 		// Retrieve the essay data
-		$userurl = '/me/task/' . $task . '/savedata';
+		$userurl = '/me/savedata';
 		
 		$apurl = '/user/UID/task/' . $task . '/essay/' . $essay . '.json';
 		$apiTask = \Epi\getApi()->invoke($apurl);
 		$ret = $apiTask;
 
-		self::debug('$apiTask => ' . print_r(array_keys($apiTask), true));
+		//self::debug('$apiTask => ' . print_r(array_keys($apiTask), true));
 
 		
 		// Get a list of ranked sentence indexes
@@ -348,7 +348,7 @@ class UserController extends IController {
 			$hhh[$ranking[0]] = $ranking[1];
 		}
 		$ret['struct'] = $hhh;
-		self::debug('$apiTask => ' . print_r($hhh, true));
+		//self::debug('$apiTask => ' . print_r($hhh, true));
 		
 		// Get the list of bigrams
 		$kk = $ret['bigrams'];
@@ -365,11 +365,36 @@ class UserController extends IController {
 		$comma_separated = substr_replace($comma_separated, "", -1);
 		self::debug('$comma_separated => ' . print_r($comma_separated, true));
 
-		$ff = \Epi\getTemplate()->get('essay.widget.php', $ret);
 
+		$userget = '/me/userdata';
+		$usermodel = \Epi\getApi()->invoke($userget);
+
+		$thisuser = $usermodel[$task][$essay]['keywords'] ?: array();
+		
+		if (count($thisuser)==0)
+		{
+			$hh = array();
+			$trigrams = $ret['trigrams'];
+			$bigrams = $ret['bigrams'];
+			$tt = array_merge($trigrams,$bigrams);
+			foreach ($tt as $key => $item)
+			{
+				$hh[] = $key;
+			}
+			$thisuser['category_all']=$hh;
+			//var_dump($thisuser);
+		}
+		
+		$ret['categories'] = $thisuser;
+		
+		$ff = \Epi\getTemplate()->get('essay.widget.php', $ret);
+		
+		
 		$params = array();
 		$params['heading'] = 'openEssayist';
 		$params['content'] = $ff;
+		
+
 
 		
 		$ff = \Epi\getTemplate()->get('breadcrumb.widget.php', array('task' => $task, 'essay' => $essay));
@@ -485,37 +510,41 @@ function keywords_order_content() {
 		dropOnEmpty : false
 
 	});
-	$("#sortable0, #sortable1, #sortable2, #sortable3").disableSelection();
+	$(".droptrue").disableSelection();
 	
 	//
 	$("#catg-Save").click(function(e) {
+		var result = {};
 		$(".droptrue").each(function(index, elt) {
 			var gg = $(this).sortable('toArray');
-			console.log(gg);
+			//console.log(gg);
+			result[$(this).attr("id")] = gg;
 		});
+		//console.log(result);
 		$.blockUI.defaults.message = '<h3>Save user data ... </h3>';
-		var params = {
-			'test' : [ 1, 2, 3 ]
-		};
+		//var params = {"Contact":{"FirstName":"Daffy","LastName":"Duck"}};
 
+		//var gg = $("#myformpost").serializeArray();
+		//console.log(gg);
+		
 		$.ajax({
 			type : "POST",
+			method: "post",
 			url : "$userurl", // URL and function to call
-			data : {
-				'params' : params
-			}, // Set Method Params
-			contentType : "application/json; charset=utf-8",
+			data : { "data" : {"$task": {"$essay" : {"keywords" : result }}}}, 
+			//contentType : "application/json; charset=utf-8",
+			//processData : true,
 			dataType : "json",
 			success : function(msg, status) {
 				// Set Response outcome
-				console.log(msg.d);
+				console.log(msg);
 			},
 			error : function(xhr, msg, e) {
 				// this should only fire if the ajax call did not happen or
 				// there was an unhandled exception
 				console.log(msg);
 			}
-		});
+		});			
 
 	});
 }
@@ -1575,22 +1604,40 @@ EOF;
 	}
 	
 	
-	
-	static public function SaveUserData($task)
+	/**
+	 * 
+	 * @param string $task
+	 * @return string
+	 * @todo	Need to overwrite existing data, updating the model
+	 */
+	static public function setUserData()
 	{
-		parse_str(file_get_contents("php://input"),$post_vars);
-		$method = $_SERVER['REQUEST_METHOD'];
-		$json['invoke'] = "POST";
-		$json['method'] = $method;
-		$json['request'] = $_REQUEST;
-		$json['params'] = $post_vars;
-		$json['get'] = $_GET;
-		$json['post'] = $_POST;
+		$data = $_POST['data'] ? : array();
+
+		$temp_oa_dir = self::getTempDir();
+		$file = $temp_oa_dir . DIRECTORY_SEPARATOR . "usermodel.txt";
+		$content = json_encode($data);
+		file_put_contents($file, $content);
+		
+		
+		$json = (array)json_decode(file_get_contents($file),true);
+		
+		
+		
+		//$json['file'] = $file;
 		return $json;
 				
+	}
+	
+	static public function getUserData()
+	{
+		//var_dump($_GET);
+		$temp_oa_dir = self::getTempDir();
+		$file = $temp_oa_dir . DIRECTORY_SEPARATOR . "usermodel.txt";
+		$json = (array)json_decode(file_get_contents($file),true);
+		return $json;
 	}
 
 }
 
 ?>
-

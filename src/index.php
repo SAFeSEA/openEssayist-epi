@@ -66,7 +66,8 @@ include_once "data/essay.class.php";
 \Epi\getRoute()->get('/me/task/([\w-_]+)/submit', array('openEssayist\UserController','SubmitEssay'));
 \Epi\getRoute()->post('/me/task/([\w-_]+)/submit', array('openEssayist\UserController','ProcessEssay'));
 
-\Epi\getApi()->post('/me/task/([\w-_]+)/savedata', array('openEssayist\UserController','SaveUserData'), \Epi\EpiApi::external);
+\Epi\getApi()->post('/me/savedata', array('openEssayist\UserController','setUserData'), \Epi\EpiApi::external);
+\Epi\getApi()->get('/me/userdata', array('openEssayist\UserController','getUserData'), \Epi\EpiApi::external);
 
 
 // API routes

@@ -315,7 +315,8 @@ foreach ($parasenttok as $paragraph) {
     				<button id="catg-Save" class="btn btn-mini btn-primary">Save</button>
     				<button id="catg-Reset" class="btn btn-mini disabled">Reset</button>
     				</div>
-    			<div class="btn-group">
+
+    				<div class="btn-group">
     				<button id="catg-New" class="btn btn-mini disabled">New Category...</button>
     			</div>
     		</div>
@@ -329,11 +330,21 @@ foreach ($parasenttok as $paragraph) {
 			<div class="widget-header"><h3>All</h3></div>
 			
 			<div class="widget-content">
-			<ul id="sortable0" class="droptrue connectedSortable">
+			<ul id="category_all" class="droptrue connectedSortable">
 		
 			<?php 
 			$tt = array_merge($trigrams,$bigrams);
-			foreach (array_slice($tt,0,130) as $key => $item)
+			$thiscat = $categories['category_all']?:array();
+			echo XXXXX($tt,$thiscat);
+			
+			/*
+			$ggg=array();
+			foreach ($thiscat as $idx)
+			{
+				$ggg[] = $tt[$idx];
+			}
+			
+			foreach ($ggg as $key => $item)
 			{
 				$ft = "".join(" ",$item['ngram']);
 				$count = $item['count'];
@@ -342,7 +353,8 @@ foreach ($parasenttok as $paragraph) {
 					
 				
 				echo "<li id='$key' class=\"ui-state-default btn\">$count $ft</li>";
-			}
+			}*/
+			
 			?>
 		
 			</ul></div>
@@ -359,7 +371,11 @@ foreach ($parasenttok as $paragraph) {
 					<a class="btn-close" href="#"><i class="icon-remove"></i></a>
 				</div>
 			</div>
-			<div class="widget-content"><ul id="sortable1" class="droptrue connectedSortable">
+			<div class="widget-content"><ul id="category_1" class="droptrue connectedSortable">
+			<?php 			//$tt = array_merge($trigrams,$bigrams);
+			$thiscat = $categories['category_1']?:array();
+			echo XXXXX($tt,$thiscat);
+			?>
 			</ul></div>
 		</div>
 
@@ -371,7 +387,11 @@ foreach ($parasenttok as $paragraph) {
 					<a class="btn-close" href="#"><i class="icon-remove"></i></a>
 				</div>
 			</div>
-			<div class="widget-content"><ul id="sortable2" class="droptrue connectedSortable">
+			<div class="widget-content"><ul id="category_2" class="droptrue connectedSortable">
+			<?php 			//$tt = array_merge($trigrams,$bigrams);
+			$thiscat = $categories['category_2']?:array();
+			echo XXXXX($tt,$thiscat);
+			?>
 			</ul></div>
 		</div>
 		
@@ -382,7 +402,11 @@ foreach ($parasenttok as $paragraph) {
 					<a class="btn-close" href="#"><i class="icon-remove"></i></a>
 				</div>
 			</div>
-			<div class="widget-content"><ul id="sortable3" class="droptrue connectedSortable">
+			<div class="widget-content"><ul id="category_3" class="droptrue connectedSortable">
+			<?php 			//$tt = array_merge($trigrams,$bigrams);
+			$thiscat = $categories['category_3']?:array();
+			echo XXXXX($tt,$thiscat);
+			?>
 			</ul></div>
 		</div>
 
@@ -402,7 +426,11 @@ foreach ($parasenttok as $paragraph) {
 			</div>
 		</div>
 		<div class="widget-content">
-			<ul id="sortable1" class="droptrue connectedSortable">
+			<ul id="category_4" class="droptrue connectedSortable">
+			<?php 			//$tt = array_merge($trigrams,$bigrams);
+			$thiscat = $categories['category_4']?:array();
+			echo XXXXX($tt,$thiscat);
+			?>
 			</ul>
 		</div>
 	</div>
@@ -417,7 +445,11 @@ foreach ($parasenttok as $paragraph) {
 			</div>
 		</div>
 		<div class="widget-content">
-			<ul id="sortable2" class="droptrue connectedSortable">
+			<ul id="category_5" class="droptrue connectedSortable">
+			<?php 			//$tt = array_merge($trigrams,$bigrams);
+			$thiscat = $categories['category_5']?:array();
+			echo XXXXX($tt,$thiscat);
+			?>
 			</ul>
 		</div>
 	</div>
@@ -431,7 +463,11 @@ foreach ($parasenttok as $paragraph) {
 			</div>
 		</div>
 		<div class="widget-content">
-			<ul id="sortable3" class="droptrue connectedSortable">
+			<ul id="category_6" class="droptrue connectedSortable">
+			<?php 			//$tt = array_merge($trigrams,$bigrams);
+			$thiscat = $categories['category_6']?:array();
+			echo XXXXX($tt,$thiscat);
+			?>
 			</ul>
 		</div>
 	</div>
@@ -514,6 +550,30 @@ function arrayTotable($title,$data)
 	echo "</tbody>";
 	echo "</thead></table>";
 	
+}
+
+function XXXXX($tt,$thiscat)
+{
+	//$tt = array_merge($trigrams,$bigrams);
+	//$thiscat = $categories['category_adll']?:array();
+	$ggg=array();
+	foreach ($thiscat as $idx)
+	{
+		$ggg[] = $tt[$idx];
+	}
+
+	$ret = "";
+	foreach ($ggg as $key => $item)
+	{
+		$ft = "".join(" ",$item['ngram']);
+		$count = $item['count'];
+			
+		$count = "<span class=\"label label-info hidden-phone\">$count</span>";
+			
+	
+		$ret .= "<li id='$key' class=\"ui-state-default btn\">$count $ft</li>" . PHP_EOL;
+	}
+	return $ret;
 }
 
 function NVLprint($list,$type=0)
