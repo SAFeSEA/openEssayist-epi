@@ -10,6 +10,7 @@
  * @package openEssayist
  */
 
+// Load the Epi package and openEssayist files 
 include_once "epi/Epi.php";
 include_once "controllers/api.class.php";
 include_once "controllers/user.class.php";
@@ -20,7 +21,14 @@ include_once 'apiclients/APIEssayAnalyser.class.php';
 include_once "data/constants.class.php";
 include_once "data/essay.class.php";
 
-//require_once "epi/firelogger.php";
+// load all third-party libraries (installed by composer)
+require_once 'vendor/autoload.php';
+
+$loader = new \Twig_Loader_Filesystem('./templates');
+$twig = new \Twig_Environment($loader, array(
+		'cache' => '../.cache',
+		'debug'=> true
+));
 
 
 /***************************************************************************************

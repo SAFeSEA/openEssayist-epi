@@ -14,13 +14,21 @@ class UserController extends IController {
 	 */
 	static public function Home()
 	{
-		$widget = \Epi\getTemplate()->get('welcome-widget.php');
+		global $twig;
+		$param = array('username' => 'variables', 'admin' => 'here');
+		if(\Epi\Epi::getSetting('debug'))
+		{
+			$param['debug'] = \Epi\getDebug()->renderAscii();
+		}
+		echo $twig->render('pages/welcome.html.twig', $param);
+		
+		/*$widget = \Epi\getTemplate()->get('welcome-widget.php');
 				
 		$params = array(
 				'heading' => 'Welcome',
 				'content' => $widget
 				);
-		IController::showTemplate('openEssayist-template.php', $params);
+		IController::showTemplate('openEssayist-template.php', $params);*/
 	}
 
 	/**
