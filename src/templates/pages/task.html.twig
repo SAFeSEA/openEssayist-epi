@@ -1,0 +1,52 @@
+{% extends "layout.html.twig" %} 
+
+{% block title %}Assignment {{ user.username}} {% endblock %}
+
+{% block content %}
+
+
+<div class="row-fluid">
+	<div class="span6">
+		<div class="widget">
+			<div class="widget-header">
+				<i class="icon-question-sign"></i>
+				<h3>Task</h3>
+			</div> <!-- /widget-header -->
+					
+			<div class="widget-content">
+				{% for item in description %}
+					<p> {{ item }}</p>
+				{% endfor %}	
+							
+			</div> <!-- /widget-content -->
+				
+		</div>
+	</div>
+	
+	<div class="span3">
+		<div class="widget">
+			<div class="widget-header">
+				<i class="icon-calendar"></i>
+				<h3>Deadline</h3>
+			</div> <!-- /widget-header -->
+					
+
+			<div class="widget-content"> 
+				<p> {{ deadline }}</p>
+			</div> <!-- /widget-content -->
+				
+		</div>
+	</div>
+		
+		<div class="span3">
+
+		</div>
+		
+	
+</div>
+
+
+{% include "widgets/listessay.panel.twig" %}
+
+{% endblock %}
+

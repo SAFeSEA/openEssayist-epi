@@ -1,0 +1,20 @@
+{% block widget%}
+<div class="widget">
+	<div class="widget-header">
+	{% block wheader%}
+		<i class="{% block icon%}icon-calendar{% endblock %}"></i>
+		<h3>{% block title%}Deadline{% endblock %}</h3>
+	{% endblock %}
+	</div>
+	<!-- /widget-header -->
+
+
+	<div class="widget-content">
+	{% block wcontent%}
+		<p></p>
+	{% endblock %}
+	</div>
+	<!-- /widget-content -->
+
+</div>
+{% endblock %}
