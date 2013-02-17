@@ -19,7 +19,7 @@ class EpiDebug
   {
     $rowWidth = 100;
     $col1Width = $rowWidth - 4;
-    $out = "\n" . str_repeat('*', $rowWidth) . "\n";
+    //$out = "\n" . str_repeat('*', $rowWidth) . "\n";
     $groups = array();
     foreach($this->messages as $module => $messages)
     {

@@ -14,6 +14,7 @@
 include_once "epi/Epi.php";
 include_once "controllers/api.class.php";
 include_once "controllers/user.class.php";
+include_once "controllers/essay.class.php";
 include_once "controllers/admin.class.php";
 include_once "controllers/swagger.class.php";
 include_once 'apiclients/APISpellCheck.class.php';
@@ -65,9 +66,13 @@ $twig = new \Twig_Environment($loader, array(
 // User, Essay and feedback routes
 \Epi\getRoute()->get('/me', array('openEssayist\UserController','Dashboard'));
 \Epi\getRoute()->get('/me/task', array('openEssayist\UserController','ListofTasks'));
-\Epi\getRoute()->get('/me/task/([\w-_]+)', array('openEssayist\UserController','ListofEssays'));
+//\Epi\getRoute()->get('/me/task/([\w-_]+)', array('openEssayist\UserController','ListofEssays'));
 \Epi\getRoute()->get('/me/task/([\w-_]+)/keyword', array('openEssayist\UserController','KeywordHistory'));
 \Epi\getRoute()->get('/me/task/([\w-_]+)/essay/([\w-_]+)', array('openEssayist\UserController','ShowEssay'));
+
+\Epi\getRoute()->get('/me/task/([\w-_]+)', array('openEssayist\EssayController','showTask'));
+
+
 \Epi\getRoute()->get('/me/task/([\w-_]+)/essay/([\w-_]+)/update', array('openEssayist\UserController','UpdateEssay'));
 \Epi\getRoute()->get('/me/task/([\w-_]+)/essay/([\w-_]+)/dispersion', array('openEssayist\UserController','ShowDispersion'));
 \Epi\getRoute()->get('/me/task/([\w-_]+)/essay/([\w-_]+)/adjacency', array('openEssayist\UserController','ShowGraph'));

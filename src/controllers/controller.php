@@ -29,6 +29,31 @@ abstract class IController
 	}
 	
 	
+	static public function renderTwig($templatename,$params=array())
+	{
+		global $twig;
+		
+		if(\Epi\Epi::getSetting('debug'))
+		{
+			$params['debug'] = \Epi\getDebug()->renderAscii();
+		}
+		// add the username (if logged in) into the param
+		if (\Epi\getSession()->get(Constants::LOGGED_IN) == true)
+		{
+			$user = \Epi\getSession()->get(Constants::USERNAME) ? : "username";
+			$params['user'] = array('username' => $user);
+		}
+		if (\Epi\getSession()->get(Constants::ADMIN_IN) == true)
+		{
+			$params['user'] = array('username' => $user,'isAdmin' => true);
+			//$params['username'] = 'Admin';
+			//$params['admin'] = 'admin';
+		}
+		
+		echo $twig->render($templatename, $params);
+		
+	}
+	
 	/**
 	 * 
 	 * @param string $templatename

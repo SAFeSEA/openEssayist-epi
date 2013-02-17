@@ -1,4 +1,6 @@
-{% extends "layout.html.twig" %}
+{% extends "layout.html.twig" %} 
+
+{% block title %}Welcome{% endblock %}
 
 {% block content %}
 <div class="row-fluid">
@@ -8,14 +10,14 @@
 			<p>This is the running prototype of openEssayist.</p>
 			<p>
 				<a href="/login" class="btn btn-primary btn-large">Learn more
-					&raquo;</a>
-
-				{% if not(username) %}
-
-				<a href="/login" class="btn btn-large">Login &raquo;</a>
+					&raquo;</a> 
+				{% if not(user) %} 
+				<a href="/login"
+					class="btn btn-large">Login &raquo;</a> 
 				{% endif %}
 			</p>
 		</div>
 	</div>
 </div>
 {% endblock %}
+

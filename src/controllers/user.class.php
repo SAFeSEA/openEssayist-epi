@@ -14,13 +14,13 @@ class UserController extends IController {
 	 */
 	static public function Home()
 	{
-		global $twig;
+		/*global $twig;
 		$param = array('username' => 'variables', 'admin' => 'here');
 		if(\Epi\Epi::getSetting('debug'))
 		{
 			$param['debug'] = \Epi\getDebug()->renderAscii();
 		}
-		echo $twig->render('pages/welcome.html.twig', $param);
+		echo $twig->render('pages/welcome.html.twig', $param);*/
 		
 		/*$widget = \Epi\getTemplate()->get('welcome-widget.php');
 				
@@ -29,6 +29,7 @@ class UserController extends IController {
 				'content' => $widget
 				);
 		IController::showTemplate('openEssayist-template.php', $params);*/
+		IController::renderTwig('pages/welcome.html.twig');
 	}
 
 	/**
@@ -1639,17 +1640,22 @@ EOF;
 
 		// add/replace new set of data into model
 		$new[$user][$task][$essay] = $data['data'];
-
+		$activity = array(
+				'date' => time(),
+				'type' => "".join("",array_keys($data['data'])),
+				'url' => "/me/task/$task/essay/$essay");
+		$new[$user]['activity'][] = $activity;
+		
 		// save to file
 		$temp_oa_dir = self::getTempDir();
 		$file = $temp_oa_dir . DIRECTORY_SEPARATOR . "usermodel.txt";
 		$content = json_encode($new);
 		file_put_contents($file, $content);
 		
-		//$json['data'] = $data;
-		//$json['old'] = $old;
+		$json['data'] = $data;
+		$json['post'] = $_REQUEST;
 		//$json['new'] = $new;
-		return $data['data'];
+		return $activity;
 				
 	}
 	

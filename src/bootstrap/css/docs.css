@@ -11,6 +11,7 @@
 body {
 	position: relative;
 	padding-top: 60px;
+	background: none repeat scroll 0 0 #EEEEEE;
 }
 
 /* Code in headings */
