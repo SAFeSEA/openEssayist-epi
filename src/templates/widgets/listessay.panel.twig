@@ -1,9 +1,43 @@
 {% extends "widgets/_panel.twig" %} 
 
+{# Use to import the macros defined in this template #}
+{% import _self as ngrams %}
+{% macro format(ngr, url) %}
+<a class="oe-keyword btn btn-mini" href="{{  url }}?word={{  ngr.ngram|join("") }}">
+	<span class="label label-info hidden-phone">{{ ngr.count }}</span> 
+	<span>{{ ngr.ngram|join(" ") }}</span>
+</a> 
+{% endmacro %}
 
-{% block title user.username|title %}
+{% block title "History of draft submitted & analysed" %}
 {% block icon "icon-question-sign" %}
 
 {% block wcontent%}
 
+<table class="table table-striped table-bordered">
+<thead>
+	<tr>
+		<th width="5%">Version</th>
+		<th>Word count</th>
+		<th>Keywords</th>
+		<th>Keywords</th>
+				<th>Review</th>
+				<th class="td-actions">Actions</th>
+	</tr>
+</thead>
+	{% for essay in essays %}
+		<tr>
+			<td><code>{{ essay.id }}</code></td>
+			<td>{{ essay.stats.words }}</td>
+			<td>
+				{%  for ngr in essay.trigrams|slice(0,1000) %}
+					{{ ngrams.format(ngr,url~'/keyword') }}
+				{% endfor %}
+				{%  for ngr in essay.bigrams|slice(0,1000) %}
+					{{ ngrams.format(ngr,url~'/keyword'|join) }}
+				{% endfor %}
+			</td>
+		</tr>
+	{% endfor %}
+</table>
 {% endblock %}

@@ -379,6 +379,7 @@ class UserController extends IController {
 		$usermodel = \Epi\getApi()->invoke($userget);
 
 		$thisuser = $usermodel['user'][$task][$essay]['keywords'] ?: array();
+		self::debug('$thisuser => ' . print_r($usermodel['user'][$task][$essay]['keywords'], true));
 		
 		if (count($thisuser)==0)
 		{
@@ -822,7 +823,7 @@ EOF;
 		$labels = array();
 		foreach ($apiTask['essays'] as $index => $item) {
 
-			if ($index == count($apiTask['essays'])-1) continue	;
+			//if ($index == count($apiTask['essays'])-1) continue	;
 			$serie = array();
 			$count[$index] = array();
 			$apurl = '/user/UID/task/' . $task . '/essay/' . $item['ref'] . '.json';

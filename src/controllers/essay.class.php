@@ -12,8 +12,25 @@ class EssayController extends IController
 		$apiUser = \Epi\getApi()->invoke('/user/UID.json');
 		$apiTask = \Epi\getApi()->invoke('/user/UID/task/' . $task . '.json');
 		
-		$params = $apiTask;
-		IController::renderTwig('pages/task.html.twig',$params);
+		self::debug('$apiTask[\'essays\'] => ' . print_r(array_keys($apiTask['essays'][0]),true));
+		
+		foreach ($apiTask['essays'] as $key => &$item)
+		{
+			$apurl = '/user/UID/task/' . $task . '/essay/' . $item['ref'] . '.json';
+			$apiEssay = \Epi\getApi()->invoke($apurl);
+			$item = array_merge($item,$apiEssay);
+		}
+		
+		self::debug('$apiTask[\'essays\'] => ' . print_r(array_keys($apiTask['essays'][0]),true));
+		
+		$apiTask['url'] = '/me/task/' . $task;
+		self::debug('$apiTask => ' . print_r(array_keys($apiTask),true));
+		
+		//$params = $apiTask;
+		
+		
+		
+		IController::renderTwig('pages/task.html.twig',$apiTask);
 	}
 	
 	

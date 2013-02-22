@@ -62,9 +62,9 @@ foreach ($apiTask22['essays'] as $id => $item)
     		  	<li><a tabindex="-1" href="/me/task/<?php echo $task?>/essay/<?php echo $essay?>/adjacency">Adjacency</a></li>
     		  			 </ul>
    			    	</div></li>
-    	    	<li class="pull-right"><div class="btn-group">
-    		<a class="btn" href="/me/task/<?php echo $task?>/essay/<?php echo $essay?>/update"><i class="icon-fullscreen"></i><span class="hidden-phone"> Update</span></a>
-    	</div></li>
+   	    	<!-- <li class="pull-right"><div class="btn-group">
+	    		<a class="btn" href="/me/task/<?php echo $task?>/essay/<?php echo $essay?>/update"><i class="icon-fullscreen"></i><span class="hidden-phone"> Update</span></a>
+    		</div></li> -->
     	
     	<?php } ?>
     	

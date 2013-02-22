@@ -30,7 +30,7 @@ $twig = new \Twig_Environment($loader, array(
 		'cache' => '../.cache',
 		'debug'=> true
 ));
-
+$twig->addExtension(new \Twig_Extension_Debug());
 
 /***************************************************************************************
  * Configure Epi
