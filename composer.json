@@ -1,9 +1,14 @@
 {
-    "config": {
-        "vendor-dir": "src/vendor"
+    "config":{
+        "vendor-dir":"src/vendor"
     },
-	"require": {
-        "twig/twig": "1.*"
+    "require":{
+        "twig/twig":"1.*",
+        "rmccue/requests":"dev-master"
+    },
+    "autoload":{
+        "psr-0":{
+            "Requests":"library/"
+        }
     }
-    
 }

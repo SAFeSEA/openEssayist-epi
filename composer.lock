@@ -1,6 +1,52 @@
 {
-    "hash": "ad586a362ea7f9aae98a8545517b16df",
+    "hash": "cb6deb0f55aeef268b50421199dd8371",
     "packages": [
+        {
+            "name": "rmccue/requests",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/rmccue/Requests.git",
+                "reference": "b84798066e9e448de24e18193c436e2652b91087"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/rmccue/Requests/zipball/b84798066e9e448de24e18193c436e2652b91087",
+                "reference": "b84798066e9e448de24e18193c436e2652b91087",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.2"
+            },
+            "time": "2013-02-14 02:20:35",
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Requests": "library/"
+                }
+            },
+            "notification-url": "http://packagist.org/downloads/",
+            "license": [
+                "ISC"
+            ],
+            "authors": [
+                {
+                    "name": "Ryan McCue",
+                    "homepage": "http://ryanmccue.info"
+                }
+            ],
+            "description": "A HTTP library written in PHP, for human beings.",
+            "homepage": "http://github.com/rmccue/Requests",
+            "keywords": [
+                "curl",
+                "fsockopen",
+                "http",
+                "idna",
+                "ipv6",
+                "iri",
+                "sockets"
+            ]
+        },
         {
             "name": "twig/twig",
             "version": "v1.12.2",
@@ -56,7 +102,7 @@
 
     ],
     "minimum-stability": "stable",
-    "stability-flags": [
-
-    ]
+    "stability-flags": {
+        "rmccue/requests": 20
+    }
 }
