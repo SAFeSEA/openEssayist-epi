@@ -4,7 +4,6 @@
 	<div class="row-fluid">
 		<div class="span9">
 EOF;
-	
 	foreach ($error as $item)
 	{
 		$code = $item['code'];

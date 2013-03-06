@@ -56,7 +56,7 @@ class APIEssayAnalyser extends APIClient
 	 */
 	function getAnalysis($text)
 	{
-		$resourcePath = "/api/essay/analysis";
+		$resourcePath = "/api/analysis";
 		$method = "POST";
 		$queryParams = array();
 	

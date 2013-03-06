@@ -152,13 +152,14 @@ class UserController extends IController {
 
 		$params = \Epi\getSession()->get('errors');
 		if ($params) {
-			//var_dump($params);		
 			\Epi\getSession()->set('errors', Null);
-			$tt["error"] = $params['error'];
-			$tt["text"] = $params['text'];
+			$tt = $params['error'];
+			//$tt = $params['text'];
 		}
+		else
+			$tt = array();
 		
-	
+		
 
 		// retrieve info on last essay submission
 		$apiTask = \Epi\getApi()->invoke('/user/UID/task/' . $task . '.json');
@@ -168,7 +169,8 @@ class UserController extends IController {
 		// generate submission form
 		$ff = \Epi\getTemplate()->get('submit-widget.php', array(
 				'task' => $task,
-				'version' => $version
+				'version' => $version,
+				'error' => $tt
 			));
 
 		$bc = \Epi\getTemplate()->get('breadcrumb.widget.php', array(
@@ -179,7 +181,7 @@ class UserController extends IController {
 		$params['heading'] = 'Submit Draft';
 		$params['breadcrumb'] = $bc;
 		$params['content'] = $ff;
-
+		
 		IController::showTemplate('openEssayist-template.php', $params);
 	}
 
@@ -263,7 +265,7 @@ class UserController extends IController {
 		$jsonKword = $client->getKeywords($text);
 		$stopwatch += microtime(true);
 		self::debug($client->getCalledURL() . " " . sprintf('%f', $stopwatch));	
-		
+		$jsonKword = array();
 		$client2 = new APISpellCheck();
 		
 		$stopwatch = -microtime(true);
@@ -295,8 +297,9 @@ class UserController extends IController {
 			$params = array();
 			$params['error'] = $res['error'];
 			$params['text'] = $text;
-			//var_dump($params);
+			var_dump($params);
 			\Epi\getSession()->set('errors', $params);
+			\Epi\getRoute()->redirect($ff);
 
 		} else {
 			$temp_oa_dir = self::getTempDir($task);
@@ -312,13 +315,13 @@ class UserController extends IController {
 		}
 		//var_dump($ff);
 
-		\Epi\getRoute()->redirect($ff);
+		//\Epi\getRoute()->redirect($ff);
 
-		//$params = array();
-		//$params['heading'] = 'openEssayist';
-		//$params['content'] = '';
+		$params = array();
+		$params['heading'] = 'openEssayist';
+		$params['content'] = var_dump($res);
 
-		//IController::showTemplate('openEssayist-template.php', $params);
+		IController::showTemplate('openEssayist-template.php', $params);
 
 	}
 
@@ -703,7 +706,41 @@ EOF;
 			\Epi\getRoute()->redirect('/me');
 			die();
 		}
+		
+		//$response = \Requests::get('http://localhost:9998/tika');
+		
+		/*//$fp = fopen("data/c.txt", "rb");
+		$idx = 3;
+		$allfile = array(
+				array("a.doc" , "application/msword"),				
+				array("b.docx" , "application/vnd.openxmlformats-officedocument.wordprocessingml.document"),				
+				array("c.txt" , "text/plain"),				
+				array("d.pdf" , "application/pdf")				
+		);
+		
+		//$fp=file_get_contents("data/".$allfile[$idx][0]);
+		$fh = fopen("data/".$allfile[$idx][0], 'rb');
+		$fp = fread($fh, filesize("data/".$allfile[$idx][0]));
+		fclose($fh);
+		var_dump($allfile[$idx][0]);
+		
+		
+		//$data = array('data' =>$fp );
+		$headers = array();
+		//$headers = array('content-type' => $allfile[$idx][1]);
+		
+		$data = array( $fp);
+		
+		$param = array('file' => $allfile[$idx][0]);
+		
+		$response = \Requests::put('http://localhost:9998/meta',
+				$headers,
+				$fp,
+				$param);
+		
+		var_dump($response);*/
 
+		
 		$ff = \Epi\getTemplate()->get('login-widget.php');
 
 		$params = array();
