@@ -20,11 +20,11 @@
 		<th width="5%">Version</th>
 		<th>Word count</th>
 		<th>Keywords</th>
-		<th>Keywords</th>
-				<th>Review</th>
-				<th class="td-actions">Actions</th>
+		<th>Review</th>
+		<th class="td-actions">Actions</th>
 	</tr>
 </thead>
+<tbody>
 	{% for essay in essays %}
 		<tr>
 			<td><code>{{ essay.id }}</code></td>
@@ -37,7 +37,14 @@
 					{{ ngrams.format(ngr,url~'/keyword'|join) }}
 				{% endfor %}
 			</td>
+			
+			<td class="td-actions">
+				<a href="{{ url~'/essay/'~essay.ref }}" class="btn btn-small btn-success ">
+					<i class="btn-icon-only icon-zoom-in"></i>										
+				</a>
+			</td>
 		</tr>
 	{% endfor %}
+</tbody>	
 </table>
 {% endblock %}

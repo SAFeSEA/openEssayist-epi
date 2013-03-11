@@ -356,7 +356,7 @@ class UserController extends IController {
 		
 		// Get a list of structure identifiers
 		$hhh = array();
-		foreach ($ret['struct'] as $ranking) {
+		foreach ($ret['ranked'] as $ranking) {
 			$hhh[$ranking[0]] = $ranking[1];
 		}
 		$ret['struct'] = $hhh;
